@@ -50,6 +50,10 @@ export const OrderItemsSection = ({ items, totalAmount }: OrderItemsSectionProps
             </div>
           );
         })}
+        <div className="flex justify-between text-sm pt-2 border-t border-border">
+          <span className="text-foreground">Доставка</span>
+          <span className="font-medium text-foreground">1000 ₸</span>
+        </div>
       </div>
       <div className="pt-3 border-t border-border flex justify-between">
         <span className="font-semibold text-foreground">Итого:</span>

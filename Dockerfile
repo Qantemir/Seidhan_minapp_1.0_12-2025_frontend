@@ -6,15 +6,11 @@ WORKDIR /app
 # Объявляем ARG для переменных окружения, которые нужны во время сборки
 # Railway автоматически передает переменные окружения как build args
 ARG VITE_API_URL
-ARG VITE_PUBLIC_URL
 ARG VITE_ADMIN_IDS
-ARG VITE_PAYMENT_LINK
 
 # Устанавливаем переменные окружения из ARG для использования во время сборки
 ENV VITE_API_URL=$VITE_API_URL
-ENV VITE_PUBLIC_URL=$VITE_PUBLIC_URL
 ENV VITE_ADMIN_IDS=$VITE_ADMIN_IDS
-ENV VITE_PAYMENT_LINK=$VITE_PAYMENT_LINK
 
 # Копируем package.json и yarn.lock
 COPY package.json yarn.lock ./

@@ -187,6 +187,12 @@ export const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
         </div>
 
         <div className="border-t bg-card px-5 py-4 space-y-3">
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Доставка:</span>
+              <span className="text-sm font-medium text-foreground">1000 ₸</span>
+            </div>
+          </div>
           <div className="flex items-center justify-between">
             <span className="text-sm sm:text-base text-muted-foreground">Итого:</span>
             <span className="font-bold text-foreground text-xl sm:text-2xl">{totalAmount} ₸</span>

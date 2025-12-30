@@ -2,16 +2,12 @@
 const cachedBaseUrl: string | null = null;
 const trailingSlashRegex = /\/$/;
 
-const normalizeBaseUrl = (value?: string | null) => {
-  if (!value) return "https://miniapp.local";
-  const trimmed = value.trim();
-  if (!trimmed) return "https://miniapp.local";
-  // Если уже есть протокол, убираем trailing slash и возвращаем
-  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
-    return trimmed.replace(trailingSlashRegex, "");
+// Получаем baseUrl из текущего домена (динамически)
+const getBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    return window.location.origin;
   }
-  // Если нет протокола, добавляем https://
-  return `https://${trimmed.replace(trailingSlashRegex, "")}`;
+  return "https://miniapp.local";
 };
 
 export const siteConfig = {
@@ -28,7 +24,9 @@ export const siteConfig = {
     "telegram mini app",
   ],
   locale: "ru_RU",
-  baseUrl: normalizeBaseUrl(import.meta.env.VITE_PUBLIC_URL),
+  get baseUrl() {
+    return getBaseUrl();
+  },
   ogImage: "https://dummyimage.com/1200x630/09090b/ffffff&text=Mini+Shop",
   contactEmail: "support@miniapp.local",
 };
@@ -36,9 +34,10 @@ export const siteConfig = {
 const httpRegex = /^https?:\/\//;
 
 export const buildCanonicalUrl = (path?: string) => {
-  if (!path) return siteConfig.baseUrl;
+  const base = siteConfig.baseUrl;
+  if (!path) return base;
   if (httpRegex.test(path)) return path;
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  return `${siteConfig.baseUrl}${normalizedPath}`;
+  return `${base}${normalizedPath}`;
 };
 

@@ -204,6 +204,12 @@ export const CartPage = () => {
             </section>
 
             <section className="px-4 py-5 sm:px-6 sm:py-6 bg-card border-t border-border sticky bottom-0" aria-label="Итоговая сумма">
+              <div className="space-y-2 mb-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm sm:text-base text-muted-foreground">Доставка:</span>
+                  <span className="text-sm sm:text-base font-medium text-foreground">1000 ₸</span>
+                </div>
+              </div>
               <div className="flex items-center justify-between">
                 <span className="text-base sm:text-lg font-semibold text-muted-foreground">Итого:</span>
                 <span className="font-bold text-foreground text-2xl sm:text-3xl">

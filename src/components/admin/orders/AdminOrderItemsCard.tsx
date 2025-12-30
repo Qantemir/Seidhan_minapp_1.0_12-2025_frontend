@@ -32,6 +32,10 @@ export const AdminOrderItemsCard = ({ items, totalAmount }: AdminOrderItemsCardP
             <span className="font-semibold text-foreground">{item.quantity * item.price} ₸</span>
           </li>
         ))}
+        <li className="flex justify-between text-sm py-2 border-t border-border">
+          <span className="text-foreground font-medium">Доставка</span>
+          <span className="font-semibold text-foreground">1000 ₸</span>
+        </li>
       </ul>
       <div className="pt-3 border-t border-border flex justify-between items-center">
         <span className="text-lg font-semibold text-foreground">Итого:</span>

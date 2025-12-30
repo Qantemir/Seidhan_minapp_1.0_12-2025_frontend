@@ -193,36 +193,6 @@ export const CheckoutPage = () => {
         }}
       >
       <div className="px-4 py-5 sm:px-6 sm:py-6 space-y-6">
-        {/* Ссылка на оплату */}
-        <Card className="p-4 sm:p-5 border-primary/20 bg-primary/5">
-          <div className="space-y-3">
-            <div>
-              <h3 className="text-base sm:text-lg font-semibold text-foreground">Оплата заказа</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                Перейдите по ссылке для оплаты заказа через Kaspi Pay или другой платёжный сервис
-              </p>
-            </div>
-            <Button
-              asChild
-              className="w-full h-11 sm:h-12 text-base font-semibold"
-              disabled={submitting || !import.meta.env.VITE_PAYMENT_LINK}
-            >
-              <a
-                href={import.meta.env.VITE_PAYMENT_LINK || '#'}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => {
-                  if (submitting || !import.meta.env.VITE_PAYMENT_LINK) {
-                    e.preventDefault();
-                  }
-                }}
-              >
-                Перейти к оплате
-              </a>
-            </Button>
-          </div>
-        </Card>
-
         <div className="space-y-5">
           <div className="space-y-2.5">
             <Label htmlFor="name" className="text-sm font-medium">Имя *</Label>
@@ -360,6 +330,10 @@ export const CheckoutPage = () => {
                     </p>
                   </div>
                 ))}
+                <div className="flex justify-between items-center py-2 border-t border-border/50">
+                  <span className="text-sm sm:text-base text-foreground">Доставка</span>
+                  <span className="font-semibold text-foreground text-sm sm:text-base whitespace-nowrap">1000 ₸</span>
+                </div>
               </div>
               <div className="flex justify-between items-center border-t border-border pt-4 mt-2">
                 <span className="font-semibold text-base sm:text-lg text-foreground">Итого</span>

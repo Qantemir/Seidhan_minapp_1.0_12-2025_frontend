@@ -41,6 +41,10 @@ export const AdminOrderItemsSection = ({ items, total }: AdminOrderItemsSectionP
             <span className="font-semibold text-foreground">{item.quantity * item.price} ₸</span>
           </li>
         ))}
+        <li className="flex justify-between text-sm py-2 border-t border-border">
+          <span className="text-foreground font-medium">Доставка</span>
+          <span className="font-semibold text-foreground">1000 ₸</span>
+        </li>
       </ul>
     </AdminSectionCard>
   );
