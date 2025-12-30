@@ -1,7 +1,7 @@
 // Утилиты для форм с React Hook Form + Zod
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm as useReactHookForm, type UseFormProps, type UseFormReturn } from 'react-hook-form';
-import type { z } from 'zod';
+import { z } from 'zod';
 
 // Обертка над useForm с автоматической интеграцией Zod
 export function useForm<T extends z.ZodType>(

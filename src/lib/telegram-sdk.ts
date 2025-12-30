@@ -1,11 +1,5 @@
 // Адаптер для работы с Telegram SDK
-// Используем @telegram-apps/sdk, но сохраняем совместимость со старой логикой
-
-import { SDKProvider, useSDK } from '@telegram-apps/sdk-react';
-import type { SDKProviderProps } from '@telegram-apps/sdk-react';
-
-// Экспортируем провайдер для использования в App
-export { SDKProvider, useSDK };
+// Сохраняем совместимость со старой логикой через window.Telegram.WebApp
 
 // Типы для совместимости
 export interface TelegramWebApp {
@@ -79,12 +73,5 @@ export interface TelegramWebApp {
   showConfirm: (message: string, callback?: (ok: boolean) => void) => void;
 }
 
-// Расширяем Window для типизации
-declare global {
-  interface Window {
-    Telegram?: {
-      WebApp: TelegramWebApp;
-    };
-  }
-}
+// Window уже определен в telegram.d.ts, не переопределяем
 

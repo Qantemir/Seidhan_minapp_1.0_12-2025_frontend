@@ -191,7 +191,7 @@ export const CartPage = () => {
                 {safeItems.map((item) => {
                   if (!item || !item.id) return null;
                   return (
-                    <AnimatedItem key={item.id} index={0}>
+                    <AnimatedItem key={item.id}>
                       <CartItem
                         item={item}
                         onUpdateQuantity={handleUpdateQuantity}

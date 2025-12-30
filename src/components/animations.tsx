@@ -29,17 +29,17 @@ export const fadeInRight: Variants = {
 // Общие настройки для анимаций
 export const defaultTransition = {
   duration: 0.3,
-  ease: [0.4, 0, 0.2, 1], // ease-in-out
+  ease: "easeInOut" as const,
 };
 
 export const fastTransition = {
   duration: 0.2,
-  ease: [0.4, 0, 0.2, 1],
+  ease: "easeInOut" as const,
 };
 
 export const slowTransition = {
   duration: 0.5,
-  ease: [0.4, 0, 0.2, 1],
+  ease: "easeInOut" as const,
 };
 
 // Компонент для анимации списка с задержкой

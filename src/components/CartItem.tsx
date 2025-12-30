@@ -130,3 +130,5 @@ export const MemoizedCartItem = memo(CartItem, (prevProps, nextProps) => {
     prevProps.item.product_name === nextProps.item.product_name
   );
 });
+
+export { CartItem };

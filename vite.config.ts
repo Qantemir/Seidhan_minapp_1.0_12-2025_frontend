@@ -27,7 +27,6 @@ export default defineConfig({
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'query-vendor': ['@tanstack/react-query'],
-          'telegram-vendor': ['@telegram-apps/sdk'],
         },
       },
     },

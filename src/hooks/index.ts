@@ -8,5 +8,5 @@ export { useStoreStatus } from './useStoreStatus';
 export { useAdminGuard } from './useAdminGuard';
 export { useAdminOrderDetail } from './useAdminOrderDetail';
 export { useFixedHeaderOffset } from './useFixedHeaderOffset';
-export { useMobile } from './use-mobile';
+export { useIsMobile as useMobile } from './use-mobile';
 

@@ -9,6 +9,7 @@ export const AVAILABLE_STATUSES: OrderStatus[] = [
 ];
 
 export const STATUS_LABELS: Record<OrderStatus, string> = {
+  'новый': 'Новый',
   'принят': 'Принят',
   'отказано': 'Отказано',
 };

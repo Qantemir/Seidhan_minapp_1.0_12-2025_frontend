@@ -24,7 +24,7 @@ import { AdminCategoryPage } from '@pages/AdminCategoryPage';
 import { AdminBroadcastPage } from '@pages/AdminBroadcastPage';
 import { AdminStoreSettingsPage } from '@pages/AdminStoreSettingsPage';
 import { AdminHelpPage } from '@pages/AdminHelpPage';
-import { NotFound } from '@pages/NotFound';
+import NotFound from '@pages/NotFound';
 
 // React Query Devtools (только в development)
 let ReactQueryDevtools: React.ComponentType<{ initialIsOpen?: boolean }> | null = null;

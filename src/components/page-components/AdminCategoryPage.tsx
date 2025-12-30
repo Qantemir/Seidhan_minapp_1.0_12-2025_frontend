@@ -68,21 +68,25 @@ export const AdminCategoryPage = () => {
   const {
     data: categoryData,
     isLoading: categoryLoading,
+    error: categoryError,
   } = useQuery({
     queryKey: queryKeys.adminCategory(categoryId!),
     queryFn: fetchCategory,
     enabled: isAuthorized && Boolean(categoryId),
     staleTime: 2 * 60 * 1000, // 2 минуты (увеличено с 30 секунд)
     gcTime: 10 * 60 * 1000, // 10 минут кэш
-    onError: error => {
-      const message = error instanceof Error ? error.message : 'Не удалось загрузить категорию';
-      toast.error(message);
-      navigate('/admin/catalog');
-    },
   });
 
-  const category = categoryData?.category ?? null;
-  const products = categoryData?.products ?? [];
+  useEffect(() => {
+    if (categoryError) {
+      const message = categoryError instanceof Error ? categoryError.message : 'Не удалось загрузить категорию';
+      toast.error(message);
+      navigate('/admin/catalog');
+    }
+  }, [categoryError, navigate]);
+
+  const category = (categoryData as any)?.category ?? null;
+  const products = (categoryData as any)?.products ?? [];
 
   useEffect(() => {
     if (category && categoryId) {

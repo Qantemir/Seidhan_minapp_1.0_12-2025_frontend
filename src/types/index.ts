@@ -3,5 +3,5 @@
  */
 
 export * from './api';
-export * from './telegram.d';
+// telegram.d.ts содержит только глобальные типы, не экспортируем
 

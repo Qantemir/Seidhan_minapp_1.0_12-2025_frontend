@@ -27,6 +27,6 @@
     "noImplicitAny": false,
     "strictNullChecks": false
   },
-  "include": ["src"],
+  "include": ["src", "env.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

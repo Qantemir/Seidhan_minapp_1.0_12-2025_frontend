@@ -123,10 +123,10 @@ export const CatalogPage = () => {
       queryClient.setQueryData(CART_QUERY_KEY, updatedCart);
 
       // Оптимистично уменьшаем остатки вариации в каталоге, чтобы товар скрывался быстрее
-      queryClient.setQueryData(CATALOG_QUERY_KEY, (prev) => {
+      queryClient.setQueryData(CATALOG_QUERY_KEY, (prev: any) => {
         if (!prev) return prev;
-        const next = { ...prev, products: [...prev.products] };
-        const pIndex = next.products.findIndex(p => p.id === productId);
+        const next = { ...prev, products: [...(prev.products || [])] };
+        const pIndex = next.products.findIndex((p: any) => p.id === productId);
         if (pIndex === -1) return prev;
         const product = next.products[pIndex];
         if (!product?.variants || !Array.isArray(product.variants)) return prev;
@@ -382,7 +382,6 @@ export const CatalogPage = () => {
         )}
       </section>
 
-      {console.log('CatalogPage render - cartDialogOpen:', cartDialogOpen, 'helpDialogOpen:', helpDialogOpen)}
       <CartDialog
         open={cartDialogOpen}
         onOpenChange={(open) => {

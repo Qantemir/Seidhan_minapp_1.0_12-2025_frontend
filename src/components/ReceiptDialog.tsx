@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Download } from '@/components/icons';
+import { getRequestAuthHeaders } from '@/lib/telegram';
 
 interface ReceiptDialogProps {
   receiptUrl: string;
@@ -270,7 +271,6 @@ export const ReceiptDialog = ({ receiptUrl, filename, trigger }: ReceiptDialogPr
                 if (isAdminEndpoint) {
                   e.preventDefault();
                   try {
-                    const { getRequestAuthHeaders } = await import('@/lib/telegram');
                     const headers = getRequestAuthHeaders();
                     const response = await fetch(receiptUrl, { headers });
                     if (!response.ok) throw new Error('Failed to download');
