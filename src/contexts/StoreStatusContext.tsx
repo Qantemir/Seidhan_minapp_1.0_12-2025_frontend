@@ -1,5 +1,3 @@
- 'use client';
-
 import { createContext, useContext, type ReactNode } from 'react';
 import { useStoreStatus as useStoreStatusService } from '@/hooks/useStoreStatus';
 import type { StoreStatus } from '@/types/api';

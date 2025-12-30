@@ -1,4 +1,3 @@
-'use client';
 
 import { useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from '@/lib/router';

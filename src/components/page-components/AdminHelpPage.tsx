@@ -1,4 +1,3 @@
-'use client';
 
 import { AdminPageLayout } from '@/components/AdminPageLayout';
 import { Seo } from '@/components/Seo';

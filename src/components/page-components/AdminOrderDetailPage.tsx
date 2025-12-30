@@ -1,4 +1,3 @@
-'use client';
 
 import { useParams } from '@/lib/router';
 import type { OrderStatus } from '@/types/api';

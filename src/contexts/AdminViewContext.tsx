@@ -1,5 +1,3 @@
- 'use client';
-
 import { createContext, useContext, useMemo, useState, useCallback, type ReactNode } from 'react';
 
 type AdminViewContextValue = {

@@ -1,4 +1,3 @@
-'use client';
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
@@ -30,12 +29,12 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Логируем ошибку для мониторинга
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.error('ErrorBoundary caught an error:', error, errorInfo);
     }
     
     // В продакшене можно отправить в систему мониторинга
-    if (process.env.NODE_ENV === 'production') {
+    if (import.meta.env.PROD) {
       // Можно интегрировать с Sentry, LogRocket и т.д.
     }
   }

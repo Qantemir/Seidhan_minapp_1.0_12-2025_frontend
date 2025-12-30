@@ -28,7 +28,7 @@ export const siteConfig = {
     "telegram mini app",
   ],
   locale: "ru_RU",
-  baseUrl: normalizeBaseUrl(process.env.NEXT_PUBLIC_VITE_PUBLIC_URL || process.env.VITE_PUBLIC_URL),
+  baseUrl: normalizeBaseUrl(import.meta.env.VITE_PUBLIC_URL),
   ogImage: "https://dummyimage.com/1200x630/09090b/ffffff&text=Mini+Shop",
   contactEmail: "support@miniapp.local",
 };

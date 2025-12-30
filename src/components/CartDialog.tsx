@@ -1,5 +1,3 @@
-"use client";
-
 import { useMemo, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "@/lib/router";

@@ -190,14 +190,13 @@ export interface ApiError {
 // - путь всегда заканчивался на /api.
 
 // Утилита для получения env переменных (используется только для ADMIN_IDS)
-// Работает аналогично тому, как читается API_URL - напрямую из process.env
+// Работает аналогично тому, как читается API_URL - напрямую из import.meta.env
 const getEnvVar = (key: string, defaultValue: string = ''): string => {
-  const nextPublicKey = `NEXT_PUBLIC_${key}`;
+  const viteKey = `VITE_${key}`;
   
-  // В Next.js переменные NEXT_PUBLIC_* доступны через process.env на клиенте
-  // Они инжектируются во время сборки через next.config.js -> env
-  // Читаем аналогично API_URL - напрямую из process.env с fallback
-  let value = process.env[nextPublicKey] || process.env[key];
+  // В Vite переменные VITE_* доступны через import.meta.env на клиенте
+  // Они инжектируются во время сборки
+  let value = import.meta.env[viteKey];
   
   // Если значение пустая строка, считаем что переменная не установлена
   if (value === '' || value === undefined || value === null) {
@@ -210,36 +209,22 @@ const getEnvVar = (key: string, defaultValue: string = ''): string => {
     }
   }
   
-  // Fallback для SSR и других случаев
-  if (!value && typeof window !== 'undefined') {
-    // Пытаемся получить из __NEXT_DATA__ (встроенные Next.js env)
-    const nextData = (window as any).__NEXT_DATA__;
-    if (nextData?.env?.[nextPublicKey]) {
-      const nextDataValue = String(nextData.env[nextPublicKey]).trim();
-      if (nextDataValue) {
-        value = nextDataValue;
-      }
-    }
-  }
-  
   const result = value || defaultValue;
   
   // Отладочная информация (только ошибки)
-  if (key === 'VITE_ADMIN_IDS') {
+  if (key === 'ADMIN_IDS') {
     const isProduction = typeof window !== 'undefined' && (
       window.location.hostname.includes('railway.app') || 
       window.location.hostname.includes('vercel.app') ||
-      process.env.NODE_ENV === 'production'
+      import.meta.env.PROD
     );
     
     if (!result || result === '') {
       if (isProduction) {
         console.error('[ENV Debug] ❌ ADMIN_IDS не загружен!', {
           key,
-          nextPublicKey,
-          'process.env[NEXT_PUBLIC_VITE_ADMIN_IDS]': process.env[nextPublicKey],
-          'process.env[VITE_ADMIN_IDS]': process.env[key],
-          'window.__NEXT_DATA__?.env': typeof window !== 'undefined' ? (window as any).__NEXT_DATA__?.env?.[nextPublicKey] : 'N/A',
+          viteKey,
+          'import.meta.env[VITE_ADMIN_IDS]': import.meta.env[viteKey],
           result: result || '(пусто)',
         });
       }
@@ -249,12 +234,10 @@ const getEnvVar = (key: string, defaultValue: string = ''): string => {
   return result;
 };
 
-// Чтение API URL с приоритетом: NEXT_PUBLIC_API_URL > NEXT_PUBLIC_VITE_API_URL > VITE_API_URL > '/api'
-// В Next.js переменные NEXT_PUBLIC_* доступны через process.env на клиенте
+// Чтение API URL с приоритетом: VITE_API_URL > '/api'
+// В Vite переменные VITE_* доступны через import.meta.env на клиенте
 const rawApiUrl = (
-  process.env.NEXT_PUBLIC_API_URL || 
-  process.env.NEXT_PUBLIC_VITE_API_URL || 
-  process.env.VITE_API_URL || 
+  import.meta.env.VITE_API_URL || 
   '/api'
 ).replace(/^["']|["']$/g, '').trim();
 
@@ -286,25 +269,22 @@ if (!apiBaseUrl.endsWith('/api')) {
 if (apiBaseUrl === '/api' && typeof window !== 'undefined') {
   const isProduction = window.location.hostname.includes('railway.app') || 
                        window.location.hostname.includes('vercel.app') ||
-                       process.env.NODE_ENV === 'production';
+                       import.meta.env.PROD;
   if (isProduction) {
     console.error('[API Config] ❌ КРИТИЧЕСКАЯ ОШИБКА: Используется относительный путь /api в production!');
     console.error('[API Config] ❌ Установите переменную окружения в Railway!');
     console.error('[API Config] ❌ Поддерживаемые переменные:');
-    console.error('[API Config]    - NEXT_PUBLIC_API_URL (рекомендуется)');
-    console.error('[API Config]    - NEXT_PUBLIC_VITE_API_URL (для совместимости)');
-    console.error('[API Config] ❌ Пример: NEXT_PUBLIC_API_URL=https://your-backend.up.railway.app/api');
-    console.error('[API Config] ❌ Или: NEXT_PUBLIC_VITE_API_URL=https://your-backend.up.railway.app/api');
+    console.error('[API Config]    - VITE_API_URL (рекомендуется)');
+    console.error('[API Config] ❌ Пример: VITE_API_URL=https://your-backend.up.railway.app/api');
   }
 }
 
 export const API_BASE_URL = apiBaseUrl;
 
 // Admin user IDs (должен совпадать с config.py в Python боте)
-// Читаем аналогично API_URL - напрямую из process.env с fallback
+// Читаем аналогично API_URL - напрямую из import.meta.env с fallback
 const adminIdsString = (
-  process.env.NEXT_PUBLIC_VITE_ADMIN_IDS || 
-  process.env.VITE_ADMIN_IDS || 
+  import.meta.env.VITE_ADMIN_IDS || 
   ''
 ).replace(/^["']|["']$/g, '').trim();
 
@@ -321,21 +301,18 @@ if (typeof window !== 'undefined') {
   if (ADMIN_IDS.length === 0) {
     const isProduction = window.location.hostname.includes('railway.app') || 
                          window.location.hostname.includes('vercel.app') ||
-                         process.env.NODE_ENV === 'production';
+                         import.meta.env.PROD;
     
     if (isProduction) {
       console.error('[ADMIN_IDS] ❌ КРИТИЧЕСКАЯ ОШИБКА: ADMIN_IDS пуст! Автоматический редирект для админов не будет работать.');
       console.error('[ADMIN_IDS] ❌ Установите переменную окружения в Railway:');
-      console.error('[ADMIN_IDS]    NEXT_PUBLIC_VITE_ADMIN_IDS=123456789,987654321');
-      console.error('[ADMIN_IDS] ❌ Или: VITE_ADMIN_IDS=123456789,987654321');
+      console.error('[ADMIN_IDS]    VITE_ADMIN_IDS=123456789,987654321');
       console.error('[ADMIN_IDS] ❌ Диагностика:', {
-        'process.env.NEXT_PUBLIC_VITE_ADMIN_IDS': process.env.NEXT_PUBLIC_VITE_ADMIN_IDS || '(не установлено)',
-        'process.env.VITE_ADMIN_IDS': process.env.VITE_ADMIN_IDS || '(не установлено)',
+        'import.meta.env.VITE_ADMIN_IDS': import.meta.env.VITE_ADMIN_IDS || '(не установлено)',
         'adminIdsString': adminIdsString || '(пусто)',
-        '__NEXT_DATA__?.env?.NEXT_PUBLIC_VITE_ADMIN_IDS': typeof window !== 'undefined' ? (window as any).__NEXT_DATA__?.env?.NEXT_PUBLIC_VITE_ADMIN_IDS || '(не найдено)' : 'N/A',
-        'NODE_ENV': process.env.NODE_ENV,
+        'PROD': import.meta.env.PROD,
       });
-      console.error('[ADMIN_IDS] ❌ ВАЖНО: В Next.js переменные NEXT_PUBLIC_* инжектируются во время СБОРКИ!');
+      console.error('[ADMIN_IDS] ❌ ВАЖНО: В Vite переменные VITE_* инжектируются во время СБОРКИ!');
       console.error('[ADMIN_IDS] ❌ Убедитесь, что переменная установлена в Railway ДО сборки приложения.');
     }
   }

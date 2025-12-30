@@ -1,4 +1,3 @@
-'use client';
 
 import { useCallback, useEffect, useMemo, useState, type ChangeEvent } from 'react';
 import { useNavigate } from '@/lib/router';
@@ -206,14 +205,14 @@ export const CheckoutPage = () => {
             <Button
               asChild
               className="w-full h-11 sm:h-12 text-base font-semibold"
-              disabled={submitting || !process.env.NEXT_PUBLIC_PAYMENT_LINK}
+              disabled={submitting || !import.meta.env.VITE_PAYMENT_LINK}
             >
               <a
-                href={process.env.NEXT_PUBLIC_PAYMENT_LINK || '#'}
+                href={import.meta.env.VITE_PAYMENT_LINK || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => {
-                  if (submitting || !process.env.NEXT_PUBLIC_PAYMENT_LINK) {
+                  if (submitting || !import.meta.env.VITE_PAYMENT_LINK) {
                     e.preventDefault();
                   }
                 }}

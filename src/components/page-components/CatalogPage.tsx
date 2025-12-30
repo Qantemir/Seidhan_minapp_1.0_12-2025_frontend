@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { useNavigate } from '@/lib/router';
 import { ShoppingCart, CheckCircle2, Package, HelpCircle, ShieldCheck } from '@/components/icons';

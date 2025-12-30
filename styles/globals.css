@@ -4,6 +4,105 @@
 
 @layer base {
   :root {
+    /* Цвета из скриншота - темная тема по умолчанию */
+    /* #0B0C10 - очень темный фон */
+    /* #1F2833 - темный серо-синий */
+    /* #C5C6C7 - светло-серый */
+    /* #66FCF1 - яркий бирюзовый (акцент) */
+    /* #45A29E - muted teal */
+    
+    --background: 210 20% 6%; /* #0B0C10 */
+    --foreground: 210 5% 78%; /* #C5C6C7 */
+    
+    --telegram-bg: 210 20% 6%;
+    --telegram-secondary-bg: 210 15% 12%; /* #1F2833 */
+    --telegram-text: 210 5% 78%;
+    --telegram-hint: 210 5% 50%;
+    --telegram-link: 180 100% 70%; /* #66FCF1 */
+    --telegram-button: 180 100% 70%;
+    --telegram-button-text: 210 20% 6%;
+
+    --card: 210 15% 12%;
+    --card-foreground: 210 5% 78%;
+
+    --popover: 210 20% 6%;
+    --popover-foreground: 210 5% 78%;
+
+    --primary: 180 100% 70%; /* #66FCF1 */
+    --primary-foreground: 210 20% 6%;
+
+    --secondary: 210 15% 12%;
+    --secondary-foreground: 210 5% 78%;
+
+    --muted: 210 15% 12%;
+    --muted-foreground: 210 5% 50%;
+
+    --accent: 180 100% 70%;
+    --accent-foreground: 210 20% 6%;
+
+    --destructive: 0 63% 50%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    --border: 210 15% 20%;
+    --input: 210 15% 20%;
+    --ring: 180 100% 70%;
+
+    --radius: 12px;
+  }
+
+  .dark {
+    /* Темная тема (основная) */
+    --background: 210 20% 6%;
+    --foreground: 210 5% 78%;
+    
+    --telegram-bg: 210 20% 6%;
+    --telegram-secondary-bg: 210 15% 12%;
+    --telegram-text: 210 5% 78%;
+    --telegram-hint: 210 5% 50%;
+    --telegram-link: 180 100% 70%;
+    --telegram-button: 180 100% 70%;
+    --telegram-button-text: 210 20% 6%;
+
+    --card: 210 15% 12%;
+    --card-foreground: 210 5% 78%;
+
+    --popover: 210 20% 6%;
+    --popover-foreground: 210 5% 78%;
+
+    --primary: 180 100% 70%;
+    --primary-foreground: 210 20% 6%;
+
+    --secondary: 210 15% 12%;
+    --secondary-foreground: 210 5% 78%;
+
+    --muted: 210 15% 12%;
+    --muted-foreground: 210 5% 50%;
+
+    --accent: 180 100% 70%;
+    --accent-foreground: 210 20% 6%;
+
+    --destructive: 0 63% 50%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    --border: 210 15% 20%;
+    --input: 210 15% 20%;
+    --ring: 180 100% 70%;
+  }
+  
+  /* Светлая тема (для совместимости с Telegram light mode) */
+  .light {
     --background: 0 0% 100%;
     --foreground: 0 0% 9%;
     
@@ -11,8 +110,8 @@
     --telegram-secondary-bg: 0 0% 96%;
     --telegram-text: 0 0% 9%;
     --telegram-hint: 0 0% 50%;
-    --telegram-link: 213 100% 50%;
-    --telegram-button: 213 100% 50%;
+    --telegram-link: 180 100% 40%; /* #45A29E */
+    --telegram-button: 180 100% 40%;
     --telegram-button-text: 0 0% 100%;
 
     --card: 0 0% 100%;
@@ -21,7 +120,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 9%;
 
-    --primary: 213 100% 50%;
+    --primary: 180 100% 40%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 96%;
@@ -30,7 +129,7 @@
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 50%;
 
-    --accent: 213 100% 50%;
+    --accent: 180 100% 40%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
@@ -44,53 +143,7 @@
 
     --border: 0 0% 90%;
     --input: 0 0% 90%;
-    --ring: 213 100% 50%;
-
-    --radius: 12px;
-  }
-
-  .dark {
-    --background: 0 0% 11%;
-    --foreground: 0 0% 98%;
-    
-    --telegram-bg: 0 0% 11%;
-    --telegram-secondary-bg: 0 0% 15%;
-    --telegram-text: 0 0% 98%;
-    --telegram-hint: 0 0% 60%;
-    --telegram-link: 213 100% 65%;
-    --telegram-button: 213 100% 55%;
-    --telegram-button-text: 0 0% 100%;
-
-    --card: 0 0% 15%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 0 0% 11%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 213 100% 55%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 60%;
-
-    --accent: 213 100% 55%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 63% 50%;
-    --destructive-foreground: 0 0% 100%;
-    
-    --success: 142 71% 45%;
-    --success-foreground: 0 0% 100%;
-    
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 100%;
-
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 213 100% 55%;
+    --ring: 180 100% 40%;
   }
 }
 
@@ -124,6 +177,13 @@
 
   html {
     --tg-header-height: 0px;
+    /* Применяем темную тему по умолчанию */
+    color-scheme: dark;
+  }
+  
+  /* Применяем темную тему по умолчанию */
+  html:not(.light) {
+    @apply dark;
   }
 
   body.telegram-app {

@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#0B0C10" />
+    <title>Mini Shop | Telegram-магазин</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+      (function() {
+        const originalLog = console.log;
+        const originalWarn = console.warn;
+        const originalInfo = console.info;
+        const originalError = console.error;
+        
+        const filterTelegramLogs = (...args) => {
+          for (const arg of args) {
+            const str = typeof arg === 'string' ? arg : (arg?.toString?.() || JSON.stringify(arg) || '');
+            if (str.includes('[Telegram.WebView]') || str.includes('postEvent')) {
+              return false;
+            }
+          }
+          return true;
+        };
+        
+        console.log = function(...args) {
+          if (filterTelegramLogs(...args)) {
+            originalLog.apply(console, args);
+          }
+        };
+        
+        console.warn = function(...args) {
+          if (filterTelegramLogs(...args)) {
+            originalWarn.apply(console, args);
+          }
+        };
+        
+        console.info = function(...args) {
+          if (filterTelegramLogs(...args)) {
+            originalInfo.apply(console, args);
+          }
+        };
+        
+        console.error = function(...args) {
+          if (filterTelegramLogs(...args)) {
+            originalError.apply(console, args);
+          }
+        };
+      })();
+      
+      (function() {
+        let viewport = document.querySelector('meta[name="viewport"]');
+        let initialScale = 1;
+        
+        function preventZoom() {
+          if (viewport) {
+            viewport.setAttribute('content', 
+              'width=device-width, initial-scale=' + initialScale + ', maximum-scale=' + initialScale + ', minimum-scale=' + initialScale + ', user-scalable=no, viewport-fit=cover'
+            );
+          }
+        }
+        
+        function resetZoom() {
+          if (viewport) {
+            viewport.setAttribute('content', 
+              'width=device-width, initial-scale=' + initialScale + ', maximum-scale=' + initialScale + ', minimum-scale=' + initialScale + ', user-scalable=no, viewport-fit=cover'
+            );
+          }
+          document.body.style.zoom = '1';
+          document.body.style.transform = 'scale(1)';
+          if (document.documentElement.style.zoom !== undefined) {
+            document.documentElement.style.zoom = '1';
+            document.documentElement.style.transform = 'scale(1)';
+          }
+          const inputs = document.querySelectorAll('input, textarea');
+          inputs.forEach(function(input) {
+            input.style.zoom = '1';
+            input.style.transform = 'scale(1)';
+          });
+        }
+        
+        preventZoom();
+        
+        window.addEventListener('orientationchange', function() {
+          setTimeout(preventZoom, 100);
+        });
+        
+        function attachZoomPrevention() {
+          const inputs = document.querySelectorAll('input, textarea');
+          inputs.forEach(function(input) {
+            input.removeEventListener('focus', resetZoom);
+            input.removeEventListener('blur', resetZoom);
+            input.removeEventListener('touchstart', resetZoom);
+            input.removeEventListener('click', resetZoom);
+            
+            input.addEventListener('focus', function() {
+              resetZoom();
+              setTimeout(resetZoom, 50);
+              setTimeout(resetZoom, 100);
+            }, { passive: true });
+            input.addEventListener('blur', resetZoom, { passive: true });
+            input.addEventListener('touchstart', resetZoom, { passive: true });
+            input.addEventListener('touchend', resetZoom, { passive: true });
+            input.addEventListener('click', resetZoom, { passive: true });
+            
+            if (input.tagName === 'TEXTAREA') {
+              input.style.fontSize = '16px';
+              input.style.webkitTextSizeAdjust = '100%';
+            }
+          });
+        }
+        
+        document.addEventListener('DOMContentLoaded', attachZoomPrevention);
+        
+        const observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+              if (node.nodeType === 1) {
+                if (node.tagName === 'INPUT' || node.tagName === 'TEXTAREA') {
+                  if (node.tagName === 'TEXTAREA') {
+                    node.style.fontSize = '16px';
+                    node.style.webkitTextSizeAdjust = '100%';
+                  }
+                  node.addEventListener('touchstart', resetZoom, { passive: true });
+                  node.addEventListener('focus', resetZoom, { passive: true });
+                  node.addEventListener('blur', resetZoom, { passive: true });
+                  node.addEventListener('click', resetZoom, { passive: true });
+                }
+                const inputs = node.querySelectorAll ? node.querySelectorAll('input, textarea') : [];
+                inputs.forEach(function(input) {
+                  if (input.tagName === 'TEXTAREA') {
+                    input.style.fontSize = '16px';
+                    input.style.webkitTextSizeAdjust = '100%';
+                  }
+                  input.addEventListener('touchstart', resetZoom, { passive: true });
+                  input.addEventListener('focus', resetZoom, { passive: true });
+                  input.addEventListener('blur', resetZoom, { passive: true });
+                  input.addEventListener('click', resetZoom, { passive: true });
+                });
+              }
+            });
+            attachZoomPrevention();
+          });
+        });
+        
+        if (document.body) {
+          observer.observe(document.body, { childList: true, subtree: true });
+        } else {
+          document.addEventListener('DOMContentLoaded', function() {
+            observer.observe(document.body, { childList: true, subtree: true });
+          });
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

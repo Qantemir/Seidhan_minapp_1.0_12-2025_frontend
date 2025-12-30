@@ -1,135 +1,82 @@
-# Frontend - Mini Shop
+# Mini Shop - Telegram Mini App
 
-Next.js фронтенд для Telegram мини-приложения интернет-магазина.
+Telegram Mini App магазин, построенный на React + Vite + TypeScript.
 
-## Технологии
+## Технологический стек
 
-- **Next.js 15** - React фреймворк
-- **React 18** - UI библиотека
-- **TypeScript** - типизация
+- **React 18** + **TypeScript**
+- **Vite** - быстрая сборка и разработка
+- **React Router** - клиентская маршрутизация
+- **TanStack Query** - управление серверным состоянием
+- **Zustand** - управление клиентским состоянием
+- **React Hook Form + Zod** - формы и валидация
 - **Tailwind CSS** - стилизация
-- **TanStack Query** - управление состоянием и кэширование
-
-## Структура проекта
-
-```
-frontend/
-├── app/              # Next.js App Router страницы
-│   ├── page.tsx      # Главная страница
-│   ├── cart/         # Страница корзины
-│   ├── checkout/     # Страница оформления заказа
-│   ├── order/        # Страница заказа
-│   └── admin/        # Админ панель
-├── src/
-│   ├── components/   # React компоненты
-│   ├── hooks/        # Custom hooks
-│   ├── lib/          # Утилиты и API клиент
-│   ├── contexts/     # React контексты
-│   ├── pages/        # Компоненты страниц
-│   └── types/        # TypeScript типы
-├── public/           # Статические файлы
-└── styles/           # Глобальные стили
-```
+- **shadcn/ui** - UI компоненты
+- **@telegram-apps/sdk** - Telegram Mini Apps SDK
 
 ## Установка
 
 ```bash
-# Установить зависимости
+npm install
+# или
 yarn install
 ```
 
 ## Разработка
 
 ```bash
-# Запустить dev сервер
+npm run dev
+# или
 yarn dev
-
-# Приложение будет доступно на http://localhost:3000
 ```
+
+Приложение будет доступно на `http://localhost:3000`
 
 ## Сборка
 
 ```bash
-# Собрать production версию
+npm run build
+# или
 yarn build
-
-# Запустить production сервер
-yarn start
 ```
 
-## Docker
-
-### Сборка Docker образа
-
-```bash
-docker build -t frontend-app .
-docker run -p 3000:3000 --env-file .env frontend-app
-```
+Собранные файлы будут в папке `dist/`
 
 ## Переменные окружения
 
-Создайте `.env.local` файл:
+Создайте файл `.env` в корне проекта:
 
 ```env
-# API URL
-NEXT_PUBLIC_VITE_API_URL=/api
-# или для внешнего API:
-# NEXT_PUBLIC_VITE_API_URL=https://api.example.com/api
-
-# Public URL
-NEXT_PUBLIC_VITE_PUBLIC_URL=http://localhost:3000
-
-# Admin IDs
-NEXT_PUBLIC_VITE_ADMIN_IDS=123456789,987654321
+VITE_API_URL=https://your-backend-url.com/api
+VITE_ADMIN_IDS=123456789,987654321
+VITE_PUBLIC_URL=https://your-frontend-url.com
 ```
 
-## API Клиент
+## Структура проекта
 
-Все запросы к API выполняются через клиент в `src/lib/api.ts`:
-
-```typescript
-import { api } from '@/lib/api';
-
-// Получить каталог
-const catalog = await api.getCatalog();
-
-// Добавить в корзину
-await api.addToCart({ product_id: '123', quantity: 1 });
-
-// Создать заказ
-await api.createOrder({ ... });
+```
+src/
+├── components/       # React компоненты
+├── contexts/         # React контексты
+├── hooks/            # Custom hooks
+├── lib/              # Утилиты и библиотеки
+├── stores/           # Zustand stores
+├── types/            # TypeScript типы
+└── styles/           # Глобальные стили
 ```
 
-## Структура страниц
+## Цветовая схема
 
-- `/` - Главная страница (каталог)
-- `/cart` - Корзина
-- `/checkout` - Оформление заказа
-- `/order/:id` - Детали заказа
-- `/admin` - Админ панель
-  - `/admin/orders` - Список заказов
-  - `/admin/catalog` - Управление каталогом
-  - `/admin/store` - Настройки магазина
-  - `/admin/broadcast` - Рассылка
+Приложение использует темную тему с акцентными цветами:
+- **Фон**: `#0B0C10` (очень темный)
+- **Вторичный фон**: `#1F2833` (темный серо-синий)
+- **Текст**: `#C5C6C7` (светло-серый)
+- **Акцент**: `#66FCF1` (яркий бирюзовый)
+- **Muted акцент**: `#45A29E` (muted teal)
 
-## Production развертывание
+## Линтинг и форматирование
 
-### Vercel / Netlify
-
-Проект можно развернуть на Vercel или Netlify:
-
-1. Подключите репозиторий
-2. Установите переменные окружения
-3. Деплой произойдет автоматически
-
-### Docker
-
-Используйте `Dockerfile` для развертывания на любом Docker-хостинге.
-
-### Настройка API URL
-
-В production убедитесь, что `NEXT_PUBLIC_VITE_API_URL` указывает на ваш бэкенд API.
-
-# dima_miniapp2.0-11-25-frontend
-# dima_miniapp2.0-11-25-frontend
-# Seidhan_minapp_1.0_12-2025_frontend
+```bash
+npm run lint
+npm run format
+```
