@@ -162,7 +162,7 @@ export interface CreateOrderRequest {
   comment?: string;
   delivery_type?: string;
   payment_type?: string;
-  payment_receipt: File;
+  payment_receipt?: File;
 }
 
 export interface UpdateAddressRequest {
