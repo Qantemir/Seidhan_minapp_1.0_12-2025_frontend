@@ -33,11 +33,14 @@ WORKDIR /app
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Копируем конфигурацию nginx для SPA (чтобы все маршруты работали)
+# Отключаем access logs и устанавливаем уровень логирования на error
 RUN echo 'server { \
     listen 8080; \
     server_name _; \
     root /usr/share/nginx/html; \
     index index.html; \
+    access_log off; \
+    error_log /var/log/nginx/error.log error; \
     location / { \
         try_files $uri $uri/ /index.html; \
     } \

@@ -18,10 +18,12 @@ export function LoadingSpinner({ className, size = "md" }: LoadingSpinnerProps) 
         className={cn(
           "animate-spin rounded-full",
           sizeClasses[size],
-          // Яркий белый цвет с тенью для лучшей видимости на темном фоне
-          "border-t-white border-r-white/50 border-b-white/30 border-l-transparent",
-          // Добавляем свечение для лучшей видимости
-          "shadow-[0_0_20px_rgba(255,255,255,0.3)]",
+          // Яркий бирюзовый цвет для максимальной видимости
+          "border-t-cyan-400 border-r-cyan-500 border-b-cyan-300 border-l-transparent",
+          // Усиленное свечение для лучшей заметности
+          "shadow-[0_0_30px_rgba(34,211,238,0.8),0_0_60px_rgba(34,211,238,0.4)]",
+          // Дополнительная обводка для контраста
+          "ring-2 ring-cyan-400/30",
           className
         )}
         aria-label="Загрузка"

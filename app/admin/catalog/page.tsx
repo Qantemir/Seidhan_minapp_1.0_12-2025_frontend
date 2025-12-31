@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 const AdminCatalogPage = dynamic(() => import('@pages/AdminCatalogPage').then(mod => ({ default: mod.AdminCatalogPage })), {
   loading: () => (
     <div className="flex items-center justify-center min-h-screen bg-background">
-      <div className="animate-spin rounded-full h-10 w-10 border-[3px] border-t-white border-r-white/50 border-b-white/30 border-l-transparent shadow-[0_0_20px_rgba(255,255,255,0.3)]"></div>
+      <div className="animate-spin rounded-full h-10 w-10 border-[3px] border-t-cyan-400 border-r-cyan-500 border-b-cyan-300 border-l-transparent shadow-[0_0_30px_rgba(34,211,238,0.8),0_0_60px_rgba(34,211,238,0.4)] ring-2 ring-cyan-400/30"></div>
     </div>
   ),
 });
