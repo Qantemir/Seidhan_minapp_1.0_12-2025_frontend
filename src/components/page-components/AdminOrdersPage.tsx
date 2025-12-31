@@ -43,11 +43,11 @@ export const AdminOrdersPage = () => {
     },
     getNextPageParam: lastPage => lastPage.next_cursor ?? undefined,
     enabled: isAuthorized,
-    staleTime: 30_000, // 30 секунд (увеличено с 15)
+    staleTime: 60_000, // 1 минута
     gcTime: 5 * 60 * 1000,
-    // Уменьшена частота автообновления с 15 до 30 секунд для снижения нагрузки
-    refetchInterval: 30_000,
-    refetchIntervalInBackground: false, // Не обновлять в фоне (экономит ресурсы)
+    // Отключен автоматический polling - обновление только вручную или при монтировании
+    refetchInterval: false,
+    refetchIntervalInBackground: false,
     initialPageParam: undefined,
   });
 
