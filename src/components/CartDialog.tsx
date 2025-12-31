@@ -138,7 +138,7 @@ export const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
 
   if (!cart || cart.items.length === 0) {
     return (
-      <Modal open={open} onClose={() => onOpenChange(false)} labelledBy={titleId} describedBy={emptyId} closeLabel="Закрыть">
+      <Modal open={open} onClose={() => onOpenChange(false)} labelledBy={titleId} describedBy={emptyId}>
         <div className="flex flex-col gap-4 p-6">
           <div className="flex items-center justify-between border-b pb-3">
             <h2 id={titleId} className="text-lg font-semibold text-foreground">
@@ -159,7 +159,7 @@ export const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
   }
 
   return (
-    <Modal open={open} onClose={() => onOpenChange(false)} labelledBy={titleId} describedBy={contentId} closeLabel="Закрыть">
+    <Modal open={open} onClose={() => onOpenChange(false)} labelledBy={titleId} describedBy={contentId}>
       <div className="flex flex-col h-full max-h-[90vh]">
         <div className="flex items-center justify-between px-5 py-4 border-b">
           <h2 id={titleId} className="text-lg sm:text-xl font-semibold text-foreground">
