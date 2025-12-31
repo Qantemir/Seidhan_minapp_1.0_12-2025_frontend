@@ -15,12 +15,14 @@ const Modal = ({
   children,
   labelledBy,
   describedBy,
+  closeLabel,
 }: {
   open: boolean;
   onClose: () => void;
   children: React.ReactNode;
   labelledBy: string;
   describedBy?: string;
+  closeLabel: string;
 }) => {
   useEffect(() => {
     if (!open) return;
@@ -51,7 +53,7 @@ const Modal = ({
           type="button"
           onClick={onClose}
           className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-muted text-muted-foreground hover:bg-muted/80 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-          aria-label={t.common.close}
+          aria-label={closeLabel}
         >
           <X className="h-4 w-4" />
         </button>
@@ -70,7 +72,7 @@ export const HelpDialog = ({ open, onOpenChange }: HelpDialogProps) => {
   const descId = "help-dialog-description";
 
   return (
-    <Modal open={open} onClose={handleClose} labelledBy={titleId} describedBy={descId}>
+    <Modal open={open} onClose={handleClose} labelledBy={titleId} describedBy={descId} closeLabel={t.common.close}>
       <div className="flex flex-col h-full max-h-[90vh]">
         <div className="px-5 py-4 border-b">
           <h2 id={titleId} className="text-lg sm:text-xl font-semibold text-foreground">

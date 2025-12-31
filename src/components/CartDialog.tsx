@@ -24,12 +24,14 @@ const Modal = ({
   children,
   labelledBy,
   describedBy,
+  closeLabel,
 }: {
   open: boolean;
   onClose: () => void;
   children: React.ReactNode;
   labelledBy: string;
   describedBy?: string;
+  closeLabel: string;
 }) => {
   useEffect(() => {
     if (!open) return;
@@ -60,7 +62,7 @@ const Modal = ({
           type="button"
           onClick={onClose}
           className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-muted text-muted-foreground hover:bg-muted/80 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-          aria-label={t.common.close}
+          aria-label={closeLabel}
         >
           <X className="h-4 w-4" />
         </button>
@@ -120,7 +122,7 @@ export const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
 
   if (isLoading) {
     return (
-      <Modal open={open} onClose={() => onOpenChange(false)} labelledBy={titleId}>
+      <Modal open={open} onClose={() => onOpenChange(false)} labelledBy={titleId} closeLabel={t.common.close}>
         <div className="flex flex-col gap-4 p-6 max-h-[80vh] overflow-y-auto">
           <div className="flex items-center justify-between">
             <h2 id={titleId} className="text-lg font-semibold text-foreground">
@@ -140,7 +142,7 @@ export const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
 
   if (!cart || cart.items.length === 0) {
     return (
-      <Modal open={open} onClose={() => onOpenChange(false)} labelledBy={titleId} describedBy={emptyId}>
+      <Modal open={open} onClose={() => onOpenChange(false)} labelledBy={titleId} describedBy={emptyId} closeLabel={t.common.close}>
         <div className="flex flex-col gap-4 p-6">
           <div className="flex items-center justify-between border-b pb-3">
             <h2 id={titleId} className="text-lg font-semibold text-foreground">
@@ -161,7 +163,7 @@ export const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
   }
 
   return (
-    <Modal open={open} onClose={() => onOpenChange(false)} labelledBy={titleId} describedBy={contentId}>
+    <Modal open={open} onClose={() => onOpenChange(false)} labelledBy={titleId} describedBy={contentId} closeLabel={t.common.close}>
       <div className="flex flex-col h-full max-h-[90vh]">
         <div className="flex items-center justify-between px-5 py-4 border-b">
           <h2 id={titleId} className="text-lg sm:text-xl font-semibold text-foreground">
