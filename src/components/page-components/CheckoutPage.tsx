@@ -1,5 +1,5 @@
 
-import { useCallback, useEffect, useMemo, useState, type ChangeEvent } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from '@/lib/router';
 import { ArrowLeft, CreditCard, AlertTriangle } from '@/components/icons';
 import { Button } from '@/components/ui/button';
@@ -29,7 +29,6 @@ export const CheckoutPage = () => {
   });
   const { data: cartSummary, isFetching: cartLoading } = useCart(true);
   const { status: storeStatus } = useStoreStatus();
-  const [paymentReceipt, setPaymentReceipt] = useState<File | null>(null);
   const { headerRef, headerHeight } = useFixedHeaderOffset(80);
   const headerTopOffset = 'calc(env(safe-area-inset-top, 0px) + var(--tg-header-height, 0px))';
 
@@ -49,11 +48,6 @@ export const CheckoutPage = () => {
       return;
     }
 
-    if (!paymentReceipt) {
-      toast.error('Пожалуйста, прикрепите чек об оплате');
-      return;
-    }
-
     setSubmitting(true);
 
     try {
@@ -62,7 +56,6 @@ export const CheckoutPage = () => {
         phone: formData.phone,
         address: formData.address,
         comment: formData.comment,
-        payment_receipt: paymentReceipt!,
       });
 
       toast.success('Заказ оформлен');
@@ -73,7 +66,7 @@ export const CheckoutPage = () => {
     } finally {
       setSubmitting(false);
     }
-  }, [formData, paymentReceipt, storeStatus?.is_sleep_mode, storeStatus?.sleep_message, cartSummary, navigate]);
+  }, [formData, storeStatus?.is_sleep_mode, storeStatus?.sleep_message, cartSummary, navigate]);
 
   const handleBack = useCallback(() => navigate('/cart'), [navigate]);
   
@@ -95,12 +88,6 @@ export const CheckoutPage = () => {
       storeStatus?.is_sleep_mode,
     [submitting, cartLoading, cartSummary, storeStatus?.is_sleep_mode],
   );
-
-  const handleReceiptChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    setPaymentReceipt(file || null);
-  }, []);
-
 
   // Мемоизация JSON-LD
   const checkoutJsonLd = useMemo(() => ({
@@ -226,41 +213,6 @@ export const CheckoutPage = () => {
               inputMode="text"
               className="text-base resize-none"
             />
-          </div>
-
-          <div className="space-y-2.5">
-            <Label htmlFor="receipt" className="text-sm font-medium">Чек об оплате *</Label>
-            <Input
-              id="receipt"
-              type="file"
-              accept="image/*,.pdf"
-              onChange={handleReceiptChange}
-              disabled={submitting}
-              className="h-11 text-base file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
-            />
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Прикрепите скриншот или PDF чека об оплате
-            </p>
-            {paymentReceipt && (
-              <div className="flex items-center justify-between rounded-lg border border-dashed border-muted bg-muted/30 p-3 sm:p-4">
-                <div className="min-w-0 flex-1 pr-3">
-                  <p className="font-medium text-foreground truncate text-sm sm:text-base">{paymentReceipt.name}</p>
-                </div>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    setPaymentReceipt(null);
-                    const input = document.getElementById('receipt') as HTMLInputElement | null;
-                    if (input) input.value = '';
-                  }}
-                  className="flex-shrink-0 h-9 px-3"
-                >
-                  Удалить
-                </Button>
-              </div>
-            )}
           </div>
         </div>
 
