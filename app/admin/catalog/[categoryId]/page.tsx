@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 const AdminCategoryPage = dynamic(() => import('@pages/AdminCategoryPage').then(mod => ({ default: mod.AdminCategoryPage })), {
   loading: () => (
     <div className="flex items-center justify-center min-h-screen bg-background">
-      <div className="animate-spin rounded-full h-10 w-10 border-[3px] border-t-cyan-400 border-r-cyan-500 border-b-cyan-300 border-l-transparent shadow-[0_0_30px_rgba(34,211,238,0.8),0_0_60px_rgba(34,211,238,0.4)] ring-2 ring-cyan-400/30"></div>
+      <div className="animate-spin rounded-full h-10 w-10 border-[3px] border-t-blue-500 border-r-cyan-500 border-b-blue-400 border-l-cyan-400 shadow-[0_0_20px_rgba(59,130,246,0.6),0_0_40px_rgba(6,182,212,0.4)] ring-2 ring-blue-500/40"></div>
     </div>
   ),
 });

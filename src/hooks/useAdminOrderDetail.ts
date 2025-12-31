@@ -225,60 +225,6 @@ export const useAdminOrderDetail = (orderId?: string) => {
     [updating],
   );
 
-  const openChatWithCustomer = useCallback(() => {
-    if (!order?.user_id) {
-      toast.error('ID клиента не найден');
-      return;
-    }
-
-    const chatLink = `tg://user?id=${order.user_id}`;
-    const tg = typeof window !== 'undefined' ? window.Telegram?.WebApp : null;
-    
-    if (tg) {
-      try {
-        // Пробуем открыть через openTelegramLink (предпочтительный метод для tg:// ссылок)
-        if (typeof tg.openTelegramLink === 'function') {
-          tg.openTelegramLink(chatLink);
-          return;
-        }
-        // Если openTelegramLink недоступен, пробуем openLink
-        if (typeof tg.openLink === 'function') {
-          tg.openLink(chatLink);
-          return;
-        }
-      } catch (error) {
-        console.error('Ошибка при открытии ссылки через Telegram WebApp:', error);
-      }
-    }
-    
-    // Fallback 1: пробуем через window.location.href
-    try {
-      window.location.href = chatLink;
-      return;
-    } catch (error) {
-      console.error('Ошибка при открытии ссылки через window.location:', error);
-    }
-    
-    // Fallback 2: создаем временную ссылку и кликаем по ней
-    try {
-      const link = document.createElement('a');
-      link.href = chatLink;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      document.body.appendChild(link);
-      link.click();
-      // Удаляем ссылку после небольшой задержки
-      setTimeout(() => {
-        if (document.body.contains(link)) {
-          document.body.removeChild(link);
-        }
-      }, 100);
-    } catch (error) {
-      console.error('Ошибка при открытии ссылки:', error);
-      toast.error('Не удалось открыть диалог с клиентом. Попробуйте скопировать ID клиента и найти его вручную.');
-    }
-  }, [order]);
-
   const receiptUrl = useMemo(() => {
     if (!order?.payment_receipt_file_id || !orderId) {
       return null;
@@ -330,6 +276,5 @@ export const useAdminOrderDetail = (orderId?: string) => {
     handleDeleteClick,
     confirmDeleteOrder,
     handleDeleteDialogChange,
-    openChatWithCustomer,
   };
 };

@@ -18,12 +18,12 @@ export function LoadingSpinner({ className, size = "md" }: LoadingSpinnerProps) 
         className={cn(
           "animate-spin rounded-full",
           sizeClasses[size],
-          // Яркий бирюзовый цвет для максимальной видимости
-          "border-t-cyan-400 border-r-cyan-500 border-b-cyan-300 border-l-transparent",
-          // Усиленное свечение для лучшей заметности
-          "shadow-[0_0_30px_rgba(34,211,238,0.8),0_0_60px_rgba(34,211,238,0.4)]",
-          // Дополнительная обводка для контраста
-          "ring-2 ring-cyan-400/30",
+          // Цвет как у активных кнопок Telegram - синий/бирюзовый, хорошо виден на темном фоне
+          "border-t-blue-500 border-r-cyan-500 border-b-blue-400 border-l-cyan-400",
+          // Умеренное свечение для видимости
+          "shadow-[0_0_20px_rgba(59,130,246,0.6),0_0_40px_rgba(6,182,212,0.4)]",
+          // Обводка для контраста
+          "ring-2 ring-blue-500/40",
           className
         )}
         aria-label="Загрузка"
