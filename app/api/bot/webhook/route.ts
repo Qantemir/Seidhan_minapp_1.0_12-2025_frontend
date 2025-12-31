@@ -9,10 +9,17 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 
+// Конфигурация для route segment - важно для production
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 // Получаем URL бэкенда из переменных окружения
+// ВАЖНО: Route handlers работают на сервере, поэтому используем серверные переменные окружения
 function getBackendUrl(): string {
-  // Приоритет: NEXT_PUBLIC_API_URL > NEXT_PUBLIC_VITE_API_URL > VITE_API_URL
+  // Приоритет: BACKEND_URL (серверная) > API_URL (серверная) > NEXT_PUBLIC_API_URL (клиентская) > NEXT_PUBLIC_VITE_API_URL > VITE_API_URL
   const apiUrl = 
+    process.env.BACKEND_URL ||
+    process.env.API_URL ||
     process.env.NEXT_PUBLIC_API_URL || 
     process.env.NEXT_PUBLIC_VITE_API_URL || 
     process.env.VITE_API_URL;
@@ -44,11 +51,35 @@ function getBackendUrl(): string {
   return `https://${normalizedUrl.replace(/^\/+/, '').replace(/\/api\/?$/, '')}`;
 }
 
+// GET метод для тестирования и диагностики
+export async function GET() {
+  const backendBaseUrl = getBackendUrl();
+  const webhookUrl = `${backendBaseUrl}/api/bot/webhook`;
+  
+  return NextResponse.json({
+    ok: true,
+    message: 'Webhook proxy route is working',
+    backendUrl: backendBaseUrl,
+    webhookUrl: webhookUrl,
+    env: {
+      BACKEND_URL: process.env.BACKEND_URL || 'not set',
+      API_URL: process.env.API_URL || 'not set',
+      NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'not set',
+      NEXT_PUBLIC_VITE_API_URL: process.env.NEXT_PUBLIC_VITE_API_URL || 'not set',
+      VITE_API_URL: process.env.VITE_API_URL || 'not set',
+    },
+  });
+}
+
 export async function POST(request: NextRequest) {
   try {
     const backendBaseUrl = getBackendUrl();
     // getBackendUrl уже возвращает URL без /api, добавляем его
     const webhookUrl = `${backendBaseUrl}/api/bot/webhook`;
+
+    console.log('[Webhook Proxy] Получен POST запрос от Telegram');
+    console.log('[Webhook Proxy] Backend URL:', backendBaseUrl);
+    console.log('[Webhook Proxy] Webhook URL:', webhookUrl);
 
     // Получаем тело запроса
     const body = await request.text();
@@ -64,6 +95,8 @@ export async function POST(request: NextRequest) {
       headers['Content-Type'] = contentType;
     }
 
+    console.log('[Webhook Proxy] Проксируем запрос на бэкенд:', webhookUrl);
+
     // Проксируем запрос на бэкенд
     const response = await fetch(webhookUrl, {
       method: 'POST',
@@ -74,7 +107,13 @@ export async function POST(request: NextRequest) {
     // Получаем ответ от бэкенда
     const responseData = await response.text();
     
-    // Логируем ошибки (если статус не 200)
+    // Логируем все ответы для диагностики
+    console.log('[Webhook Proxy] Ответ от бэкенда:', {
+      status: response.status,
+      statusText: response.statusText,
+      dataPreview: responseData.substring(0, 200),
+    });
+    
     if (!response.ok) {
       console.error(
         `[Webhook Proxy] Ошибка от бэкенда: ${response.status} ${response.statusText}`,
