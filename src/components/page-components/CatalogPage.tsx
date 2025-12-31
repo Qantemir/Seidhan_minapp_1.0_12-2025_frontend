@@ -244,55 +244,53 @@ export const CatalogPage = () => {
         <div className="absolute top-0 left-0 w-64 h-64 bg-primary/3 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute top-0 right-0 w-48 h-48 bg-accent/3 rounded-full blur-3xl pointer-events-none" />
         
-        <div className="flex items-center justify-end gap-2 relative z-10">
-          <nav className="flex items-center gap-2 flex-shrink-0" aria-label="Навигация по магазину">
-            {isUserAdmin && forceClientView && (
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => {
-                  setForceClientView(false);
-                  navigate('/admin');
-                }}
-                className="h-10 px-3 sm:px-4 gap-2 rounded-lg"
-              >
-                <ShieldCheck className="h-4 w-4 flex-shrink-0" />
-                <span className="hidden sm:inline text-sm font-medium">Админ-режим</span>
-              </Button>
-            )}
+        <nav className="flex items-center gap-2 relative z-10 w-full" aria-label="Навигация по магазину">
+          {isUserAdmin && forceClientView && (
             <Button
-              variant="outline"
+              variant="secondary"
               size="sm"
-              onClick={handleHelp}
-              className="h-10 px-3 sm:px-4 rounded-lg"
+              onClick={() => {
+                setForceClientView(false);
+                navigate('/admin');
+              }}
+              className="flex-1 h-10 px-3 sm:px-4 gap-2 rounded-lg"
             >
-              <HelpCircle className="h-4 w-4 sm:mr-2 flex-shrink-0" />
-              <span className="hidden sm:inline text-sm font-medium">Помощь</span>
+              <ShieldCheck className="h-4 w-4 flex-shrink-0" />
+              <span className="hidden sm:inline text-sm font-medium">Админ-режим</span>
             </Button>
+          )}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleHelp}
+            className={`h-10 px-3 sm:px-4 rounded-lg ${isUserAdmin && forceClientView ? 'flex-1' : 'flex-1'}`}
+          >
+            <HelpCircle className="h-4 w-4 sm:mr-2 flex-shrink-0" />
+            <span className="hidden sm:inline text-sm font-medium">Помощь</span>
+          </Button>
 
-            <div className="relative">
-              <Button
-                variant="default"
-                size="sm"
-                onClick={handleOpenCart}
-                className="relative h-10 px-3 sm:px-4 rounded-lg shadow-sm glow-hover"
-              >
-                <ShoppingCart className="h-4 w-4 sm:mr-2 flex-shrink-0" />
-                <span className="hidden sm:inline text-sm font-medium">Корзина</span>
-                {cartItemsCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 sm:relative sm:top-0 sm:right-0 sm:ml-2 bg-gradient-to-br from-primary to-accent text-primary-foreground text-[10px] sm:text-xs font-bold rounded-full h-5 w-5 sm:h-6 sm:px-2 sm:w-auto flex items-center justify-center shadow-sm glow-primary">
-                    {cartItemsCount}
-                  </span>
-                )}
-              </Button>
-              {addSuccess && (
-                <span className="absolute -right-1 -top-8 sm:-top-7 flex items-center gap-1 text-[10px] sm:text-xs text-primary bg-card/95 px-2 py-1 rounded-full shadow whitespace-nowrap">
-                  <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4" /> <span className="hidden sm:inline">Добавлено</span>
+          <div className="relative flex-1">
+            <Button
+              variant="default"
+              size="sm"
+              onClick={handleOpenCart}
+              className="relative w-full h-10 px-3 sm:px-4 rounded-lg shadow-sm glow-hover"
+            >
+              <ShoppingCart className="h-4 w-4 sm:mr-2 flex-shrink-0" />
+              <span className="hidden sm:inline text-sm font-medium">Корзина</span>
+              {cartItemsCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 sm:relative sm:top-0 sm:right-0 sm:ml-2 bg-gradient-to-br from-primary to-accent text-primary-foreground text-[10px] sm:text-xs font-bold rounded-full h-5 w-5 sm:h-6 sm:px-2 sm:w-auto flex items-center justify-center shadow-sm glow-primary">
+                  {cartItemsCount}
                 </span>
               )}
-            </div>
-          </nav>
-        </div>
+            </Button>
+            {addSuccess && (
+              <span className="absolute -right-1 -top-8 sm:-top-7 flex items-center gap-1 text-[10px] sm:text-xs text-primary bg-card/95 px-2 py-1 rounded-full shadow whitespace-nowrap">
+                <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4" /> <span className="hidden sm:inline">Добавлено</span>
+              </span>
+            )}
+          </div>
+        </nav>
       </header>
       <main
         className="min-h-screen bg-background pb-20"
