@@ -4,12 +4,16 @@
 
 @layer base {
   :root {
-    /* Цвета из скриншота - темная тема по умолчанию */
+    /* Обновленная цветовая схема с разнообразием */
     /* #0B0C10 - очень темный фон */
     /* #1F2833 - темный серо-синий */
     /* #C5C6C7 - светло-серый */
     /* #66FCF1 - яркий бирюзовый (акцент) */
     /* #45A29E - muted teal */
+    /* Новые акцентные цвета для разнообразия */
+    /* #FF6B9D - розовый акцент */
+    /* #A78BFA - фиолетовый акцент */
+    /* #34D399 - зеленый акцент */
     
     --background: 210 20% 6%; /* #0B0C10 */
     --foreground: 210 5% 78%; /* #C5C6C7 */
@@ -54,6 +58,11 @@
     --ring: 180 100% 70%;
 
     --radius: 12px;
+    
+    /* Новые градиентные цвета */
+    --gradient-primary: linear-gradient(135deg, #66FCF1 0%, #45A29E 100%);
+    --gradient-accent: linear-gradient(135deg, #A78BFA 0%, #66FCF1 100%);
+    --gradient-card: linear-gradient(135deg, rgba(31, 40, 51, 0.8) 0%, rgba(11, 12, 16, 0.9) 100%);
   }
 
   .dark {
@@ -99,6 +108,11 @@
     --border: 210 15% 20%;
     --input: 210 15% 20%;
     --ring: 180 100% 70%;
+    
+    /* Градиенты для темной темы */
+    --gradient-primary: linear-gradient(135deg, #66FCF1 0%, #45A29E 100%);
+    --gradient-accent: linear-gradient(135deg, #A78BFA 0%, #66FCF1 100%);
+    --gradient-card: linear-gradient(135deg, rgba(31, 40, 51, 0.8) 0%, rgba(11, 12, 16, 0.9) 100%);
   }
   
   /* Светлая тема (для совместимости с Telegram light mode) */
@@ -226,8 +240,51 @@
   input,
   textarea,
   select {
-    transition-property: color, background-color, border-color, opacity, transform;
+    transition-property: color, background-color, border-color, opacity, transform, box-shadow;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
+  }
+  
+  /* Градиентные утилиты */
+  .gradient-primary {
+    background: linear-gradient(135deg, #66FCF1 0%, #45A29E 100%);
+  }
+  
+  .gradient-accent {
+    background: linear-gradient(135deg, #A78BFA 0%, #66FCF1 100%);
+  }
+  
+  .gradient-card {
+    background: linear-gradient(135deg, rgba(31, 40, 51, 0.8) 0%, rgba(11, 12, 16, 0.9) 100%);
+  }
+  
+  /* Эффекты свечения */
+  .glow-primary {
+    box-shadow: 0 0 20px rgba(102, 252, 241, 0.3), 0 0 40px rgba(102, 252, 241, 0.1);
+  }
+  
+  .glow-accent {
+    box-shadow: 0 0 20px rgba(167, 139, 250, 0.3), 0 0 40px rgba(167, 139, 250, 0.1);
+  }
+  
+  .glow-hover:hover {
+    box-shadow: 0 0 25px rgba(102, 252, 241, 0.4), 0 0 50px rgba(102, 252, 241, 0.15);
+  }
+  
+  /* Glassmorphism эффект */
+  .glass {
+    background: rgba(31, 40, 51, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Улучшенные тени */
+  .shadow-glow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 0 20px rgba(102, 252, 241, 0.1);
+  }
+  
+  .shadow-card {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
   }
 }

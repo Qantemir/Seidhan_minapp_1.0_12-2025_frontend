@@ -40,7 +40,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }: CartItemProps) => {
 
   return (
     <motion.div 
-      className="flex gap-3 sm:gap-4 p-4 sm:p-5 bg-card rounded-xl border border-border shadow-sm"
+      className="flex gap-3 sm:gap-4 p-4 sm:p-5 bg-gradient-to-br from-card via-card/95 to-card/90 rounded-xl border border-border/50 shadow-card hover:shadow-glow hover:border-primary/30 transition-all duration-300"
       whileHover={{ scale: 1.01 }}
       transition={{ duration: 0.2 }}
     >
@@ -109,7 +109,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }: CartItemProps) => {
           </div>
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground hidden sm:inline">=</span>
-            <span className="text-base sm:text-lg font-bold text-foreground">
+            <span className="text-base sm:text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               {totalPrice} ₸
             </span>
           </div>

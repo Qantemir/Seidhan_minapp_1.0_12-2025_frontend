@@ -115,15 +115,20 @@ export const ProductCard = ({
 
   return (
     <HoverScale>
-      <Card className="w-full overflow-hidden border-border bg-card rounded-2xl shadow-sm h-full transition-shadow hover:shadow-md">
+      <Card className="w-full overflow-hidden border-border/50 bg-gradient-to-br from-card via-card/95 to-card/90 rounded-2xl shadow-card h-full transition-all duration-300 hover:shadow-glow hover:border-primary/30 relative group">
+        {/* Декоративный градиентный акцент */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none" />
+        
         {displayImage && (
           <motion.div 
-            className="aspect-[3/2] w-full overflow-hidden bg-muted"
+            className="aspect-[3/2] w-full overflow-hidden bg-muted relative"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
             role="img"
             aria-label={`Изображение товара ${product.name}`}
           >
+            {/* Градиентный оверлей на изображении */}
+            <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent z-10 pointer-events-none" />
             <img
               src={displayImage}
               alt={product?.description ? `${product?.name || 'Товар'} - ${product.description.substring(0, 100)}` : product?.name || 'Товар'}
@@ -161,10 +166,10 @@ export const ProductCard = ({
                       setQuantity(1);
                     }}
                     disabled={!variant.available || isOutOfStock}
-                    className={`px-3 py-2 text-xs sm:text-sm rounded-lg border transition-all min-h-[36px] flex items-center justify-center ${
+                    className={`px-3 py-2 text-xs sm:text-sm rounded-lg border transition-all min-h-[36px] flex items-center justify-center relative overflow-hidden ${
                       selectedVariant?.id === variant.id
-                        ? 'bg-primary text-primary-foreground border-primary shadow-sm'
-                        : 'bg-secondary text-secondary-foreground border-border hover:bg-secondary/80 active:scale-95'
+                        ? 'gradient-primary text-primary-foreground border-primary/50 shadow-sm glow-primary'
+                        : 'bg-secondary/60 text-secondary-foreground border-border/50 hover:bg-secondary/80 hover:border-primary/30 active:scale-95 hover:shadow-md'
                     } ${!variant.available || isOutOfStock ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                   >
                     <span className="font-medium">{variant.name || 'Без названия'}</span>
@@ -183,7 +188,7 @@ export const ProductCard = ({
           </div>
 
         <div className="flex items-center justify-between pt-1 gap-2.5">
-          <div className="text-lg sm:text-xl font-bold text-foreground">
+          <div className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             {currentPrice} ₸
           </div>
 
@@ -214,10 +219,11 @@ export const ProductCard = ({
               <Button 
                 onClick={handleAddToCart} 
                 size="sm" 
-                className="px-3 sm:px-4 text-xs sm:text-sm font-medium h-9 sm:h-10 shadow-sm min-w-[90px] sm:min-w-[100px]"
+                className="px-3 sm:px-4 text-xs sm:text-sm font-medium h-9 sm:h-10 shadow-sm min-w-[90px] sm:min-w-[100px] gradient-primary hover:opacity-90 glow-hover transition-all duration-300 relative overflow-hidden group"
                 disabled={isAdding}
               >
-                {isAdding ? 'Добавление...' : 'В корзину'}
+                <span className="relative z-10">{isAdding ? 'Добавление...' : 'В корзину'}</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               </Button>
             </div>
           ) : mustSelectVariant ? (

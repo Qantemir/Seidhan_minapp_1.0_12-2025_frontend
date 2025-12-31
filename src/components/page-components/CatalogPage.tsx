@@ -232,7 +232,7 @@ export const CatalogPage = () => {
       />
       <header
         ref={headerRef}
-        className="fixed inset-x-0 bg-card/95 backdrop-blur-sm border-b border-border px-4 py-3 sm:px-6 sm:py-4 shadow-sm"
+        className="fixed inset-x-0 glass border-b border-border/50 px-4 py-3 sm:px-6 sm:py-4 shadow-glow"
         style={{
           top: headerTopOffset,
           zIndex: 10,
@@ -241,8 +241,8 @@ export const CatalogPage = () => {
       >
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5 min-w-0 flex-shrink">
-            <Package className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" aria-hidden="true" />
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground truncate">Магазин</h1>
+            <Package className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0 glow-primary" aria-hidden="true" />
+            <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent truncate">Магазин</h1>
           </div>
 
           <nav className="flex items-center gap-2 flex-shrink-0" aria-label="Навигация по магазину">
@@ -275,12 +275,12 @@ export const CatalogPage = () => {
                 variant="default"
                 size="sm"
                 onClick={handleOpenCart}
-                className="relative h-10 px-3 sm:px-4 rounded-lg shadow-sm"
+                className="relative h-10 px-3 sm:px-4 rounded-lg shadow-sm glow-hover"
               >
                 <ShoppingCart className="h-4 w-4 sm:mr-2 flex-shrink-0" />
                 <span className="hidden sm:inline text-sm font-medium">Корзина</span>
                 {cartItemsCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 sm:relative sm:top-0 sm:right-0 sm:ml-2 bg-primary-foreground text-primary text-[10px] sm:text-xs font-bold rounded-full h-5 w-5 sm:h-6 sm:px-2 sm:w-auto flex items-center justify-center shadow-sm">
+                  <span className="absolute -top-1.5 -right-1.5 sm:relative sm:top-0 sm:right-0 sm:ml-2 bg-gradient-to-br from-primary to-accent text-primary-foreground text-[10px] sm:text-xs font-bold rounded-full h-5 w-5 sm:h-6 sm:px-2 sm:w-auto flex items-center justify-center shadow-sm glow-primary">
                     {cartItemsCount}
                   </span>
                 )}
@@ -304,9 +304,9 @@ export const CatalogPage = () => {
 
       {storeStatus?.is_sleep_mode && (
         <section className="p-4" aria-label="Статус магазина">
-          <Card className="border-destructive/50 bg-destructive/10">
+          <Card className="border-destructive/50 bg-gradient-to-br from-destructive/20 via-destructive/10 to-destructive/20 backdrop-blur-sm shadow-glow">
             <CardHeader>
-              <CardTitle className="text-destructive">Магазин временно не работает</CardTitle>
+              <CardTitle className="text-destructive bg-gradient-to-r from-destructive to-destructive/80 bg-clip-text text-transparent">Магазин временно не работает</CardTitle>
               <CardDescription className="text-destructive/80">
                 {storeStatus.sleep_message || 'Мы временно не принимаем заказы. Возвращайтесь позже!'}
               </CardDescription>
@@ -318,7 +318,7 @@ export const CatalogPage = () => {
       {categories.length > 0 && (
         <motion.section
           aria-label="Категории"
-          className="px-4 py-4 sm:px-6 sm:py-5 border-b border-border bg-card"
+          className="px-4 py-4 sm:px-6 sm:py-5 border-b border-border/50 bg-gradient-to-br from-card/80 via-card/60 to-card/80 backdrop-blur-sm"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
@@ -329,13 +329,13 @@ export const CatalogPage = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.2 }}
             >
-              <Button
-                variant={selectedCategory === null ? 'default' : 'outline'}
-                onClick={handleSelectAllCategories}
-                className="flex-shrink-0 h-10 px-5 text-sm font-medium"
-              >
-                Все
-              </Button>
+            <Button
+              variant={selectedCategory === null ? 'default' : 'outline'}
+              onClick={handleSelectAllCategories}
+              className="flex-shrink-0 h-10 px-5 text-sm font-medium transition-all duration-300"
+            >
+              Все
+            </Button>
             </motion.div>
             {categories.map((category) => (
               <motion.div
@@ -347,7 +347,7 @@ export const CatalogPage = () => {
                 <Button
                   variant={selectedCategory === category.id ? 'default' : 'outline'}
                   onClick={() => handleSelectCategory(category.id)}
-                  className="flex-shrink-0 h-10 px-5 text-sm font-medium whitespace-nowrap"
+                  className="flex-shrink-0 h-10 px-5 text-sm font-medium whitespace-nowrap transition-all duration-300"
                 >
                   {category.name}
                 </Button>

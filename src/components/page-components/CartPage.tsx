@@ -112,7 +112,7 @@ export const CartPage = () => {
         <Seo title="Корзина пуста" description="Добавьте товары в корзину, чтобы оформить заказ." path="/cart" jsonLd={cartJsonLd} />
         <div
           ref={headerRef}
-          className="fixed inset-x-0 bg-card border-b border-border px-3 py-2.5 sm:px-4 sm:py-4"
+          className="fixed inset-x-0 glass border-b border-border/50 px-3 py-2.5 sm:px-4 sm:py-4 shadow-glow"
           style={{
             top: headerTopOffset,
             zIndex: 10,
@@ -123,11 +123,11 @@ export const CartPage = () => {
               variant="ghost"
               size="icon"
               onClick={handleBack}
-              className="h-9 w-9 sm:h-10 sm:w-10"
+              className="h-9 w-9 sm:h-10 sm:w-10 hover:bg-primary/20"
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
-            <h1 className="text-lg sm:text-xl font-bold text-foreground">Корзина</h1>
+            <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Корзина</h1>
           </div>
         </div>
 
@@ -160,7 +160,7 @@ export const CartPage = () => {
         <>
           <div
             ref={headerRef}
-            className="fixed inset-x-0 bg-card border-b border-border px-3 py-2.5 sm:px-4 sm:py-4"
+            className="fixed inset-x-0 glass border-b border-border/50 px-3 py-2.5 sm:px-4 sm:py-4 shadow-glow"
             style={{
               top: headerTopOffset,
               zIndex: 10,
@@ -171,11 +171,11 @@ export const CartPage = () => {
                 variant="ghost"
                 size="icon"
                 onClick={handleBack}
-                className="h-9 w-9 sm:h-10 sm:w-10"
+                className="h-9 w-9 sm:h-10 sm:w-10 hover:bg-primary/20"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
-              <h1 className="text-lg sm:text-xl font-bold text-foreground">Корзина</h1>
+              <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Корзина</h1>
             </div>
           </div>
 
@@ -203,7 +203,7 @@ export const CartPage = () => {
               </AnimatedList>
             </section>
 
-            <section className="px-4 py-5 sm:px-6 sm:py-6 bg-card border-t border-border sticky bottom-0" aria-label="Итоговая сумма">
+            <section className="px-4 py-5 sm:px-6 sm:py-6 glass border-t border-border/50 sticky bottom-0 shadow-glow" aria-label="Итоговая сумма">
               <div className="space-y-2 mb-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm sm:text-base text-muted-foreground">Доставка:</span>
@@ -212,7 +212,7 @@ export const CartPage = () => {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-base sm:text-lg font-semibold text-muted-foreground">Итого:</span>
-                <span className="font-bold text-foreground text-2xl sm:text-3xl">
+                <span className="font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent text-2xl sm:text-3xl">
                   {totalAmount} ₸
                 </span>
               </div>
