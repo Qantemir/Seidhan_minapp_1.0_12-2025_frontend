@@ -20,8 +20,11 @@ import { useQueryClient } from '@tanstack/react-query';
 import { AnimatedList, AnimatedItem } from '@/components/animations';
 import { motion } from 'framer-motion';
 import { useFixedHeaderOffset } from '@/hooks/useFixedHeaderOffset';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 export const CatalogPage = () => {
+  const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [cartDialogOpen, setCartDialogOpen] = useState(false);
   const [helpDialogOpen, setHelpDialogOpen] = useState(false);
@@ -54,7 +57,7 @@ export const CatalogPage = () => {
     return {
       "@context": "https://schema.org",
       "@type": "ItemList",
-      name: "Каталог товаров",
+      name: t.catalog.catalogProducts,
       itemListElement: products.map((product, index) => ({
         "@type": "Product",
         name: product.name,
@@ -75,8 +78,8 @@ export const CatalogPage = () => {
 
   useEffect(() => {
     if (catalogError) {
-      const errorMessage = catalogError instanceof Error ? catalogError.message : 'Ошибка загрузки каталога';
-      toast.error(`Ошибка загрузки каталога: ${errorMessage}`);
+      const errorMessage = catalogError instanceof Error ? catalogError.message : t.errors.catalogLoad;
+      toast.error(`${t.errors.catalogLoad}: ${errorMessage}`);
     }
   }, [catalogError]);
 
@@ -95,19 +98,19 @@ export const CatalogPage = () => {
     }
 
     if (storeStatus?.is_sleep_mode) {
-      toast.warning(storeStatus.sleep_message || 'Магазин временно не принимает заказы');
+      toast.warning(storeStatus.sleep_message || t.store.sleepModeShort);
       return;
     }
 
     const userId = getUserId();
     if (!userId) {
-      toast.error('Ошибка: не удалось определить пользователя');
+      toast.error(t.errors.userNotFound);
       return;
     }
 
     // variant_id теперь обязателен
     if (!variantId) {
-      toast.error('Ошибка: необходимо выбрать вариацию (вкус)');
+      toast.error(t.errors.variantRequired);
       return;
     }
 
@@ -158,7 +161,7 @@ export const CatalogPage = () => {
     } catch (error) {
       // Обновляем корзину при ошибке, чтобы показать актуальное состояние
       await queryClient.invalidateQueries({ queryKey: CART_QUERY_KEY });
-      const errorMessage = error instanceof Error ? error.message : 'Ошибка при добавлении в корзину';
+      const errorMessage = error instanceof Error ? error.message : t.errors.addToCart;
       toast.error(errorMessage);
     } finally {
       setAddingToCart(null);
@@ -201,8 +204,8 @@ export const CatalogPage = () => {
     return (
       <>
         <Seo
-          title="Каталог товаров"
-          description="Просматривайте категории и товары Mini Shop прямо внутри Telegram."
+          title={t.catalog.title}
+          description={t.catalog.description}
           path="/"
         />
         <main className="min-h-screen bg-background p-4 space-y-4" role="main" aria-busy>
@@ -223,13 +226,13 @@ export const CatalogPage = () => {
   }
 
   return (
-    <>
-      <Seo
-        title="Каталог товаров"
-        description="Выбирайте товары по категориям и добавляйте их в корзину в Mini Shop."
-        path="/"
-        jsonLd={catalogJsonLd}
-      />
+      <>
+        <Seo
+          title={t.catalog.title}
+          description={t.catalog.descriptionShort}
+          path="/"
+          jsonLd={catalogJsonLd}
+        />
       <header
         ref={headerRef}
         className="fixed top-0 inset-x-0 glass border-b border-border/50 px-4 py-3 sm:px-6 sm:py-4 shadow-glow relative overflow-hidden"
@@ -255,9 +258,10 @@ export const CatalogPage = () => {
               className="flex-1 h-10 px-2 sm:px-3 gap-1.5 sm:gap-2 rounded-lg"
             >
               <ShieldCheck className="h-4 w-4 flex-shrink-0" />
-              <span className="text-xs sm:text-sm font-medium">Админ</span>
+              <span className="text-xs sm:text-sm font-medium">{t.common.admin}</span>
             </Button>
           )}
+          <LanguageSwitcher />
           <Button
             variant="outline"
             size="sm"
@@ -265,7 +269,7 @@ export const CatalogPage = () => {
             className="flex-1 h-10 px-2 sm:px-3 gap-1.5 sm:gap-2 rounded-lg"
           >
             <HelpCircle className="h-4 w-4 flex-shrink-0" />
-            <span className="text-xs sm:text-sm font-medium">Помощь</span>
+            <span className="text-xs sm:text-sm font-medium">{t.common.help}</span>
           </Button>
 
           <div className="relative flex-1">
@@ -276,7 +280,7 @@ export const CatalogPage = () => {
               className="relative w-full h-10 px-2 sm:px-3 gap-1.5 sm:gap-2 rounded-lg shadow-sm glow-hover"
             >
               <ShoppingCart className="h-4 w-4 flex-shrink-0" />
-              <span className="text-xs sm:text-sm font-medium">Корзина</span>
+              <span className="text-xs sm:text-sm font-medium">{t.common.cart}</span>
               {cartItemsCount > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 bg-gradient-to-br from-primary to-accent text-primary-foreground text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-sm glow-primary">
                   {cartItemsCount}
@@ -285,7 +289,7 @@ export const CatalogPage = () => {
             </Button>
             {addSuccess && (
               <span className="absolute -right-1 -top-8 sm:-top-7 flex items-center gap-1 text-[10px] sm:text-xs text-primary bg-card/95 px-2 py-1 rounded-full shadow whitespace-nowrap">
-                <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4" /> <span className="hidden sm:inline">Добавлено</span>
+                <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4" /> <span className="hidden sm:inline">{t.common.added}</span>
               </span>
             )}
           </div>
@@ -303,9 +307,9 @@ export const CatalogPage = () => {
         <section className="p-4" aria-label="Статус магазина">
           <Card className="border-destructive/50 bg-gradient-to-br from-destructive/20 via-destructive/10 to-destructive/20 backdrop-blur-sm shadow-glow">
             <CardHeader>
-              <CardTitle className="text-destructive bg-gradient-to-r from-destructive to-destructive/80 bg-clip-text text-transparent">Магазин временно не работает</CardTitle>
+              <CardTitle className="text-destructive bg-gradient-to-r from-destructive to-destructive/80 bg-clip-text text-transparent">{t.store.sleepMode}</CardTitle>
               <CardDescription className="text-destructive/80">
-                {storeStatus.sleep_message || 'Мы временно не принимаем заказы. Возвращайтесь позже!'}
+                {storeStatus.sleep_message || t.store.sleepMessage}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -331,7 +335,7 @@ export const CatalogPage = () => {
               onClick={handleSelectAllCategories}
               className="flex-shrink-0 h-10 px-5 text-sm font-medium transition-all duration-300"
             >
-              Все
+              {t.common.all}
             </Button>
             </motion.div>
             {categories.map((category) => (
@@ -358,8 +362,8 @@ export const CatalogPage = () => {
         {filteredProducts.length === 0 ? (
           <div className="text-center py-16 sm:py-20">
             <Package className="h-20 w-20 sm:h-24 sm:w-24 text-muted-foreground mx-auto mb-4" />
-            <p className="text-base sm:text-lg text-muted-foreground font-medium">Товары не найдены</p>
-            <p className="text-sm text-muted-foreground mt-2">Попробуйте выбрать другую категорию</p>
+            <p className="text-base sm:text-lg text-muted-foreground font-medium">{t.catalog.productsNotFound}</p>
+            <p className="text-sm text-muted-foreground mt-2">{t.catalog.tryAnotherCategory}</p>
           </div>
         ) : (
           <AnimatedList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">

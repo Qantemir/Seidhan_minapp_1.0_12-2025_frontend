@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useCart, CART_QUERY_KEY } from "@/hooks/useCart";
 import { useQueryClient } from "@tanstack/react-query";
 import { AnimatedList } from "@/components/animations";
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface CartDialogProps {
   open: boolean;
@@ -59,7 +60,7 @@ const Modal = ({
           type="button"
           onClick={onClose}
           className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-muted text-muted-foreground hover:bg-muted/80 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-          aria-label="Закрыть"
+          aria-label={t.common.close}
         >
           <X className="h-4 w-4" />
         </button>
@@ -71,6 +72,7 @@ const Modal = ({
 };
 
 export const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: cart, isLoading } = useCart(open);
@@ -87,7 +89,7 @@ export const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
         });
         queryClient.setQueryData(CART_QUERY_KEY, updatedCart);
       } catch {
-        toast.error("Ошибка при обновлении количества");
+        toast.error(t.cart.updateError);
       }
     },
     [queryClient]
@@ -101,7 +103,7 @@ export const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
         });
         queryClient.setQueryData(CART_QUERY_KEY, updatedCart);
       } catch {
-        toast.error("Ошибка при удалении товара");
+        toast.error(t.cart.removeError);
       }
     },
     [queryClient]
@@ -122,9 +124,9 @@ export const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
         <div className="flex flex-col gap-4 p-6 max-h-[80vh] overflow-y-auto">
           <div className="flex items-center justify-between">
             <h2 id={titleId} className="text-lg font-semibold text-foreground">
-              Корзина
+              {t.cart.title}
             </h2>
-            <span className="sr-only">Загрузка корзины</span>
+            <span className="sr-only">{t.common.loading}</span>
           </div>
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
@@ -142,16 +144,16 @@ export const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
         <div className="flex flex-col gap-4 p-6">
           <div className="flex items-center justify-between border-b pb-3">
             <h2 id={titleId} className="text-lg font-semibold text-foreground">
-              Корзина
+              {t.cart.title}
             </h2>
           </div>
           <div className="flex flex-col items-center justify-center py-6 text-center">
             <ShoppingCart className="h-14 w-14 text-muted-foreground mb-4" />
-            <p className="text-base text-foreground font-medium mb-1">Корзина пуста</p>
+            <p className="text-base text-foreground font-medium mb-1">{t.cart.empty}</p>
             <p id={emptyId} className="text-sm text-muted-foreground mb-5">
-              Добавьте товары из каталога
+              {t.cart.emptyDescription}
             </p>
-            <Button onClick={() => onOpenChange(false)}>Продолжить покупки</Button>
+            <Button onClick={() => onOpenChange(false)}>{t.common.continueShopping}</Button>
           </div>
         </div>
       </Modal>
@@ -163,7 +165,7 @@ export const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
       <div className="flex flex-col h-full max-h-[90vh]">
         <div className="flex items-center justify-between px-5 py-4 border-b">
           <h2 id={titleId} className="text-lg sm:text-xl font-semibold text-foreground">
-            Корзина
+            {t.cart.title}
           </h2>
         </div>
 
@@ -189,16 +191,16 @@ export const CartDialog = ({ open, onOpenChange }: CartDialogProps) => {
         <div className="border-t bg-card px-5 py-4 space-y-3">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Доставка:</span>
+              <span className="text-sm text-muted-foreground">{t.cart.delivery}:</span>
               <span className="text-sm font-medium text-foreground">1000 ₸</span>
             </div>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm sm:text-base text-muted-foreground">Итого:</span>
+            <span className="text-sm sm:text-base text-muted-foreground">{t.cart.total}:</span>
             <span className="font-bold text-foreground text-xl sm:text-2xl">{totalAmount} ₸</span>
           </div>
           <Button onClick={handleCheckout} className="w-full" size="lg">
-            Оформить заказ
+            {t.cart.checkoutButton}
           </Button>
         </div>
       </div>

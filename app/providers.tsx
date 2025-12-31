@@ -7,6 +7,7 @@ import { QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { queryClient, queryKeys } from '@/lib/react-query';
 import { AdminViewProvider } from '@/contexts/AdminViewContext';
 import { StoreStatusProvider } from '@/contexts/StoreStatusContext';
+import { LanguageProvider } from '@/contexts/LanguageContext';
 import { StoreSleepOverlay } from '@/components/StoreSleepOverlay';
 import { Toaster } from '@/components/ui/sonner';
 import { initTelegram } from '@/lib/telegram';
@@ -25,17 +26,19 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AdminViewProvider>
-        <StoreStatusProvider>
-          <InitTelegram />
-          {children}
-          {!isAdminRoute && <StoreSleepOverlay />}
-          <Toaster />
-          {process.env.NODE_ENV === 'development' && (
-            <ReactQueryDevtools initialIsOpen={false} />
-          )}
-        </StoreStatusProvider>
-      </AdminViewProvider>
+      <LanguageProvider>
+        <AdminViewProvider>
+          <StoreStatusProvider>
+            <InitTelegram />
+            {children}
+            {!isAdminRoute && <StoreSleepOverlay />}
+            <Toaster />
+            {process.env.NODE_ENV === 'development' && (
+              <ReactQueryDevtools initialIsOpen={false} />
+            )}
+          </StoreStatusProvider>
+        </AdminViewProvider>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }

@@ -14,8 +14,10 @@ import { useCart, CART_QUERY_KEY } from '@/hooks/useCart';
 import { useQueryClient } from '@tanstack/react-query';
 import { PageTransition, AnimatedList, AnimatedItem } from '@/components/animations';
 import { useFixedHeaderOffset } from '@/hooks/useFixedHeaderOffset';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const CartPage = () => {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: cart, isLoading } = useCart(true);
@@ -47,12 +49,12 @@ export const CartPage = () => {
   useEffect(() => {
     if (cart && Array.isArray(cart.items) && cart.items.length > 0 && cart.total_amount !== undefined) {
       if (showMainButton && handleCheckout) {
-        showMainButton(`Оформить заказ • ${cart.total_amount} ₸`, handleCheckout);
+        showMainButton(`${t.cart.checkoutButton} • ${cart.total_amount} ₸`, handleCheckout);
       }
     } else {
       if (hideMainButton) hideMainButton();
     }
-  }, [cart, handleCheckout]);
+  }, [cart, handleCheckout, t]);
 
   const handleUpdateQuantity = useCallback(async (itemId: string, quantity: number) => {
     if (!itemId || !quantity || quantity < 1) return;
@@ -63,7 +65,7 @@ export const CartPage = () => {
         queryClient.setQueryData(CART_QUERY_KEY, updatedCart);
       }
     } catch (error) {
-      toast.error('Ошибка при обновлении количества');
+      toast.error(t.cart.updateError);
     }
   }, [queryClient]);
 
@@ -76,22 +78,22 @@ export const CartPage = () => {
         queryClient.setQueryData(CART_QUERY_KEY, updatedCart);
       }
     } catch (error) {
-      toast.error('Ошибка при удалении товара');
+      toast.error(t.cart.removeError);
     }
   }, [queryClient]);
 
   const cartJsonLd = useMemo(() => ({
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Корзина",
-    description: "Проверьте товары перед оформлением заказа в Mini Shop.",
+    name: t.cart.title,
+    description: t.cart.description,
     url: buildCanonicalUrl("/cart"),
-  }), []);
+  }), [t]);
 
   if (isLoading) {
     return (
       <>
-        <Seo title="Корзина" description="Проверьте товары перед оформлением заказа." path="/cart" jsonLd={cartJsonLd} />
+        <Seo title={t.cart.title} description={t.cart.description} path="/cart" jsonLd={cartJsonLd} />
         <main className="min-h-screen bg-background p-4 space-y-4" role="main" aria-busy>
           <Skeleton className="h-12 w-full" />
           {[1, 2, 3].map(i => (
@@ -109,7 +111,7 @@ export const CartPage = () => {
   if (!hasItems) {
     return (
       <>
-        <Seo title="Корзина пуста" description="Добавьте товары в корзину, чтобы оформить заказ." path="/cart" jsonLd={cartJsonLd} />
+        <Seo title={t.cart.empty} description={t.cart.descriptionEmpty} path="/cart" jsonLd={cartJsonLd} />
         <div
           ref={headerRef}
           className="fixed inset-x-0 glass border-b border-border/50 px-3 py-2.5 sm:px-4 sm:py-4 shadow-glow"
@@ -127,7 +129,7 @@ export const CartPage = () => {
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
-            <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Корзина</h1>
+            <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{t.cart.title}</h1>
           </div>
         </div>
 
@@ -140,12 +142,12 @@ export const CartPage = () => {
         >
           <div className="flex-1 flex flex-col items-center justify-center p-4">
             <ShoppingCart className="h-16 w-16 text-muted-foreground mb-4" />
-            <p className="text-lg text-muted-foreground mb-2">Корзина пуста</p>
+            <p className="text-lg text-muted-foreground mb-2">{t.cart.empty}</p>
             <p className="text-sm text-muted-foreground mb-6">
-              Добавьте товары из каталога
+              {t.cart.emptyDescription}
             </p>
             <Button onClick={handleBack}>
-              Перейти к покупкам
+              {t.common.goToShopping}
             </Button>
           </div>
         </main>
@@ -154,8 +156,8 @@ export const CartPage = () => {
   }
 
   return (
-    <>
-      <Seo title="Корзина" description="Редактируйте корзину и переходите к оформлению заказа." path="/cart" jsonLd={cartJsonLd} />
+      <>
+        <Seo title={t.cart.title} description={t.cart.descriptionEdit} path="/cart" jsonLd={cartJsonLd} />
       <PageTransition>
         <>
           <div
@@ -175,7 +177,7 @@ export const CartPage = () => {
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
-              <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Корзина</h1>
+              <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{t.cart.title}</h1>
             </div>
           </div>
 
@@ -186,7 +188,7 @@ export const CartPage = () => {
               paddingTop: `calc(${headerHeight || 0}px + env(safe-area-inset-top, 0px) + var(--tg-header-height, 0px))`,
             }}
           >
-            <section className="px-4 py-5 sm:px-6 sm:py-6" aria-label="Товары в корзине">
+            <section className="px-4 py-5 sm:px-6 sm:py-6" aria-label={t.cart.items}>
               <AnimatedList className="space-y-4">
                 {safeItems.map((item) => {
                   if (!item || !item.id) return null;
@@ -203,15 +205,15 @@ export const CartPage = () => {
               </AnimatedList>
             </section>
 
-            <section className="px-4 py-5 sm:px-6 sm:py-6 glass border-t border-border/50 sticky bottom-0 shadow-glow" aria-label="Итоговая сумма">
+            <section className="px-4 py-5 sm:px-6 sm:py-6 glass border-t border-border/50 sticky bottom-0 shadow-glow" aria-label={t.cart.total}>
               <div className="space-y-2 mb-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm sm:text-base text-muted-foreground">Доставка:</span>
+                  <span className="text-sm sm:text-base text-muted-foreground">{t.cart.delivery}:</span>
                   <span className="text-sm sm:text-base font-medium text-foreground">1000 ₸</span>
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-base sm:text-lg font-semibold text-muted-foreground">Итого:</span>
+                <span className="text-base sm:text-lg font-semibold text-muted-foreground">{t.cart.total}:</span>
                 <span className="font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent text-2xl sm:text-3xl">
                   {totalAmount} ₸
                 </span>
