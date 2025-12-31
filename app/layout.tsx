@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     description: 'Mini Shop — быстрый Telegram-магазин с категориями, корзиной и онлайн-оплатой.',
     images: [
       {
-        url: 'https://dummyimage.com/1200x630/09090b/ffffff&text=Mini+Shop',
+        url: 'https://dummyimage.com/1200x630/0B0C10/66FCF1&text=Mini+Shop',
         width: 1200,
         height: 630,
         alt: 'Mini Shop',
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Mini Shop | Telegram-магазин',
     description: 'Mini Shop — быстрый Telegram-магазин с категориями, корзиной и онлайн-оплатой.',
-    images: ['https://dummyimage.com/1200x630/09090b/ffffff&text=Mini+Shop'],
+    images: ['https://dummyimage.com/1200x630/0B0C10/66FCF1&text=Mini+Shop'],
   },
   robots: {
     index: true,

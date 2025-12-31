@@ -232,10 +232,8 @@ export const CatalogPage = () => {
       />
       <header
         ref={headerRef}
-        className="fixed inset-x-0 glass border-b border-border/50 px-4 py-3 sm:px-6 sm:py-4 shadow-glow relative overflow-hidden"
+        className="fixed top-0 inset-x-0 glass border-b border-border/50 px-4 py-3 sm:px-6 sm:py-4 shadow-glow relative overflow-hidden"
         style={{
-          top: 0,
-          paddingTop: headerTopOffset,
           zIndex: 10,
         }}
         role="banner"
@@ -297,7 +295,7 @@ export const CatalogPage = () => {
         className="min-h-screen bg-background pb-20"
         role="main"
         style={{
-          paddingTop: `calc(${headerHeight}px + env(safe-area-inset-top, 0px) + var(--tg-header-height, 0px))`,
+          paddingTop: `${headerHeight}px`,
         }}
       >
 

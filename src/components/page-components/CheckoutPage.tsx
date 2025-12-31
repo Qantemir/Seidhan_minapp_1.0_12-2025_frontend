@@ -1,7 +1,7 @@
 
 import { useCallback, useEffect, useMemo, useState, type ChangeEvent } from 'react';
 import { useNavigate } from '@/lib/router';
-import { ArrowLeft } from '@/components/icons';
+import { ArrowLeft, CreditCard, AlertTriangle } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -18,27 +18,6 @@ import { useCart } from '@/hooks/useCart';
 import { PageTransition } from '@/components/animations';
 import { useFixedHeaderOffset } from '@/hooks/useFixedHeaderOffset';
 
-const RECEIPT_MAX_SIZE = 10 * 1024 * 1024; // 10 MB
-const RECEIPT_ALLOWED_TYPES = [
-  'application/pdf',
-  'image/jpeg',
-  'image/jpg',
-  'image/png',
-  'image/webp',
-  'image/heic',
-  'image/heif',
-];
-
-const formatFileSize = (size: number) => {
-  if (size >= 1024 * 1024) {
-    return `${(size / (1024 * 1024)).toFixed(2)} МБ`;
-  }
-  if (size >= 1024) {
-    return `${(size / 1024).toFixed(0)} КБ`;
-  }
-  return `${size} Б`;
-};
-
 export const CheckoutPage = () => {
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
@@ -51,18 +30,12 @@ export const CheckoutPage = () => {
   const { data: cartSummary, isFetching: cartLoading } = useCart(true);
   const { status: storeStatus } = useStoreStatus();
   const [paymentReceipt, setPaymentReceipt] = useState<File | null>(null);
-  const [receiptError, setReceiptError] = useState<string | null>(null);
   const { headerRef, headerHeight } = useFixedHeaderOffset(80);
   const headerTopOffset = 'calc(env(safe-area-inset-top, 0px) + var(--tg-header-height, 0px))';
 
   const handleSubmit = useCallback(async () => {
     if (!formData.name || !formData.phone || !formData.address) {
       toast.warning('Пожалуйста, заполните все обязательные поля');
-      return;
-    }
-
-    if (!paymentReceipt) {
-      toast.warning('Пожалуйста, прикрепите чек об оплате');
       return;
     }
 
@@ -76,6 +49,11 @@ export const CheckoutPage = () => {
       return;
     }
 
+    if (!paymentReceipt) {
+      toast.error('Пожалуйста, прикрепите чек об оплате');
+      return;
+    }
+
     setSubmitting(true);
 
     try {
@@ -84,7 +62,7 @@ export const CheckoutPage = () => {
         phone: formData.phone,
         address: formData.address,
         comment: formData.comment,
-        payment_receipt: paymentReceipt,
+        payment_receipt: paymentReceipt!,
       });
 
       toast.success('Заказ оформлен');
@@ -114,38 +92,13 @@ export const CheckoutPage = () => {
       cartLoading ||
       !cartSummary ||
       cartSummary.items.length === 0 ||
-      storeStatus?.is_sleep_mode ||
-      !paymentReceipt ||
-      !!receiptError,
-    [submitting, cartLoading, cartSummary, storeStatus?.is_sleep_mode, paymentReceipt, receiptError],
+      storeStatus?.is_sleep_mode,
+    [submitting, cartLoading, cartSummary, storeStatus?.is_sleep_mode],
   );
-
-  // payment_link убран, т.к. не используется
 
   const handleReceiptChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file) {
-      setPaymentReceipt(null);
-      setReceiptError('Пожалуйста, прикрепите чек об оплате');
-      return;
-    }
-
-    if (!RECEIPT_ALLOWED_TYPES.includes(file.type)) {
-      event.target.value = '';
-      setPaymentReceipt(null);
-      setReceiptError('Допустимы только изображения (JPG, PNG, WEBP, HEIC) или PDF');
-      return;
-    }
-
-    if (file.size > RECEIPT_MAX_SIZE) {
-      event.target.value = '';
-      setPaymentReceipt(null);
-      setReceiptError(`Файл слишком большой. Максимум ${(RECEIPT_MAX_SIZE / (1024 * 1024)).toFixed(0)} МБ`);
-      return;
-    }
-
-    setReceiptError(null);
-    setPaymentReceipt(file);
+    setPaymentReceipt(file || null);
   }, []);
 
 
@@ -202,6 +155,23 @@ export const CheckoutPage = () => {
         }}
       >
       <div className="px-4 py-5 sm:px-6 sm:py-6 space-y-6">
+        {/* Уведомление об оплате наличными */}
+        <div className="bg-primary/10 border-2 border-primary rounded-xl p-4 sm:p-5 space-y-3 shadow-lg">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 mt-0.5">
+              <CreditCard className="h-6 w-6 sm:h-7 sm:w-7 text-primary" />
+            </div>
+            <div className="flex-1 space-y-2">
+              <h3 className="text-base sm:text-lg font-bold text-foreground">
+                Оплата только наличными
+              </h3>
+              <p className="text-sm sm:text-base text-foreground/90 leading-relaxed">
+                Заказ оплачивается только наличными при получении. Подготовьте точную сумму для оплаты курьеру.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div className="space-y-5">
           <div className="space-y-2.5">
             <Label htmlFor="name" className="text-sm font-medium">Имя *</Label>
@@ -269,18 +239,12 @@ export const CheckoutPage = () => {
               className="h-11 text-base file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
             />
             <p className="text-xs sm:text-sm text-muted-foreground">
-              Прикрепите скриншот или PDF до {(RECEIPT_MAX_SIZE / (1024 * 1024)).toFixed(0)} МБ
+              Прикрепите скриншот или PDF чека об оплате
             </p>
-            {receiptError && (
-              <p className="text-sm text-destructive mt-1">
-                {receiptError}
-              </p>
-            )}
-            {paymentReceipt && !receiptError && (
+            {paymentReceipt && (
               <div className="flex items-center justify-between rounded-lg border border-dashed border-muted bg-muted/30 p-3 sm:p-4">
                 <div className="min-w-0 flex-1 pr-3">
                   <p className="font-medium text-foreground truncate text-sm sm:text-base">{paymentReceipt.name}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{formatFileSize(paymentReceipt.size)}</p>
                 </div>
                 <Button
                   type="button"
@@ -288,7 +252,6 @@ export const CheckoutPage = () => {
                   size="sm"
                   onClick={() => {
                     setPaymentReceipt(null);
-                    setReceiptError(null);
                     const input = document.getElementById('receipt') as HTMLInputElement | null;
                     if (input) input.value = '';
                   }}
@@ -351,6 +314,16 @@ export const CheckoutPage = () => {
             </>
           )}
         </Card>
+
+        {/* Напоминание об оплате наличными перед кнопкой */}
+        <div className="bg-amber-50 dark:bg-amber-950/30 border-2 border-amber-400 dark:border-amber-600 rounded-lg p-3 sm:p-4">
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-amber-600 dark:text-amber-500 flex-shrink-0" />
+            <p className="text-sm sm:text-base font-semibold text-amber-900 dark:text-amber-100">
+              💵 Оплата производится только наличными при получении заказа
+            </p>
+          </div>
+        </div>
 
         <Button
           className="w-full h-12 sm:h-14 text-base sm:text-lg font-semibold shadow-lg"

@@ -22,7 +22,7 @@ export const checkoutFormSchema = z.object({
   comment: z.string().optional(),
   delivery_type: z.string().optional(),
   payment_type: z.string().optional(),
-  payment_receipt: z.instanceof(File, { message: 'Файл обязателен' }),
+  payment_receipt: z.instanceof(File),
 });
 
 export type CheckoutFormData = z.infer<typeof checkoutFormSchema>;

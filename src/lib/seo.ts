@@ -27,7 +27,7 @@ export const siteConfig = {
   get baseUrl() {
     return getBaseUrl();
   },
-  ogImage: "https://dummyimage.com/1200x630/09090b/ffffff&text=Mini+Shop",
+  ogImage: "https://dummyimage.com/1200x630/0B0C10/66FCF1&text=Mini+Shop",
   contactEmail: "support@miniapp.local",
 };
 
