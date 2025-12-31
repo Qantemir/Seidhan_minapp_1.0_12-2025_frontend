@@ -1,11 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, MoreVertical, Trash2 } from '@/components/icons';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { ArrowLeft, Trash2 } from '@/components/icons';
 
 interface AdminOrderHeaderProps {
   shortOrderId: string;
@@ -32,19 +26,15 @@ export const AdminOrderHeader = ({
         </div>
       </div>
       {onDelete && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" aria-label="Дополнительные действия">
-              <MoreVertical className="h-5 w-5" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={onDelete} className="text-destructive">
-              <Trash2 className="h-4 w-4 mr-2" />
-              Удалить заказ
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={onDelete} 
+          aria-label="Удалить заказ"
+          className="text-destructive hover:text-destructive hover:bg-destructive/10"
+        >
+          <Trash2 className="h-5 w-5" />
+        </Button>
       )}
     </div>
   </header>
