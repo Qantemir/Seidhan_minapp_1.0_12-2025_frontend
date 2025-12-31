@@ -232,17 +232,30 @@ export const CatalogPage = () => {
       />
       <header
         ref={headerRef}
-        className="fixed inset-x-0 glass border-b border-border/50 px-4 py-3 sm:px-6 sm:py-4 shadow-glow"
+        className="fixed inset-x-0 glass border-b border-border/50 px-4 py-3 sm:px-6 sm:py-4 shadow-glow relative overflow-hidden"
         style={{
           top: headerTopOffset,
           zIndex: 10,
         }}
         role="banner"
       >
-        <div className="flex items-center justify-between gap-3">
+        {/* Декоративный градиентный фон */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5 pointer-events-none" />
+        <div className="absolute top-0 left-0 w-64 h-64 bg-primary/3 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-48 h-48 bg-accent/3 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="flex items-center justify-between gap-3 relative z-10">
           <div className="flex items-center gap-2.5 min-w-0 flex-shrink">
-            <Package className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0 glow-primary" aria-hidden="true" />
-            <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent truncate">Магазин</h1>
+            <div className="relative">
+              <div className="absolute inset-0 bg-primary/20 rounded-xl blur-md" />
+              <Package className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0 relative z-10 glow-primary" aria-hidden="true" />
+            </div>
+            <div className="flex items-center gap-2.5">
+              <div className="w-1 h-6 sm:h-7 bg-gradient-to-b from-primary to-accent rounded-full" />
+              <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent truncate">
+                Магазин
+              </h1>
+            </div>
           </div>
 
           <nav className="flex items-center gap-2 flex-shrink-0" aria-label="Навигация по магазину">

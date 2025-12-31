@@ -164,24 +164,33 @@ export const CheckoutPage = () => {
       <PageTransition>
       <header 
         ref={headerRef}
-        className="fixed inset-x-0 bg-card/95 backdrop-blur-sm border-b border-border px-4 py-3 sm:px-6 sm:py-4 shadow-sm" 
+        className="fixed inset-x-0 glass border-b border-border/50 px-4 py-3 sm:px-6 sm:py-4 shadow-glow relative overflow-hidden" 
         style={{
           top: headerTopOffset,
           zIndex: 10
         }}
         role="banner"
       >
-        <div className="flex items-center gap-3">
+        {/* Декоративный градиентный фон */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5 pointer-events-none" />
+        <div className="absolute top-0 left-0 w-48 h-48 bg-primary/3 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="flex items-center gap-3 relative z-10">
           <Button
             variant="ghost"
             size="icon"
             onClick={handleBack}
-            className="h-10 w-10 sm:h-11 sm:w-11 rounded-lg"
+            className="h-10 w-10 sm:h-11 sm:w-11 rounded-lg hover:bg-primary/20 transition-all duration-300"
             aria-label="Вернуться в корзину"
           >
             <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6" />
           </Button>
-          <h1 className="text-xl sm:text-2xl font-bold text-foreground truncate">Оформление заказа</h1>
+          <div className="flex items-center gap-2.5">
+            <div className="w-1 h-6 bg-gradient-to-b from-primary to-accent rounded-full" />
+            <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent truncate">
+              Оформление заказа
+            </h1>
+          </div>
         </div>
       </header>
 
