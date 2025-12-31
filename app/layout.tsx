@@ -115,43 +115,17 @@ export default function RootLayout({
         <Script id="telegram-log-filter" strategy="beforeInteractive">
           {`
             (function() {
-              const originalLog = console.log;
-              const originalWarn = console.warn;
-              const originalInfo = console.info;
               const originalError = console.error;
               
-              const filterTelegramLogs = (...args) => {
-                for (const arg of args) {
-                  const str = typeof arg === 'string' ? arg : (arg?.toString?.() || JSON.stringify(arg) || '');
-                  if (str.includes('[Telegram.WebView]') || str.includes('postEvent')) {
-                    return false;
-                  }
-                }
-                return true;
-              };
+              // Отключаем все логи кроме error
+              console.log = function() {};
+              console.warn = function() {};
+              console.info = function() {};
+              console.debug = function() {};
               
-              console.log = function(...args) {
-                if (filterTelegramLogs(...args)) {
-                  originalLog.apply(console, args);
-                }
-              };
-              
-              console.warn = function(...args) {
-                if (filterTelegramLogs(...args)) {
-                  originalWarn.apply(console, args);
-                }
-              };
-              
-              console.info = function(...args) {
-                if (filterTelegramLogs(...args)) {
-                  originalInfo.apply(console, args);
-                }
-              };
-              
+              // Оставляем только error
               console.error = function(...args) {
-                if (filterTelegramLogs(...args)) {
-                  originalError.apply(console, args);
-                }
+                originalError.apply(console, args);
               };
             })();
           `}

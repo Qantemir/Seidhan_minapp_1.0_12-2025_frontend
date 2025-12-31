@@ -20,8 +20,6 @@ export const checkoutFormSchema = z.object({
   phone: z.string().min(1, 'Телефон обязателен').regex(/^[\d\s\-\+\(\)]+$/, 'Неверный формат телефона'),
   address: z.string().min(1, 'Адрес обязателен'),
   comment: z.string().optional(),
-  delivery_type: z.string().optional(),
-  payment_type: z.string().optional(),
   payment_receipt: z.instanceof(File).optional(),
 });
 

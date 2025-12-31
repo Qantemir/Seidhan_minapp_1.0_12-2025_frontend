@@ -261,8 +261,6 @@ class ApiClient {
     formData.append('address', data.address);
     // Условные поля добавляем только если они есть
     if (data.comment) formData.append('comment', data.comment);
-    if (data.delivery_type) formData.append('delivery_type', data.delivery_type);
-    if (data.payment_type) formData.append('payment_type', data.payment_type);
     if (data.payment_receipt) formData.append('payment_receipt', data.payment_receipt);
 
     return this.request<Order>('/order', {
@@ -449,7 +447,6 @@ export function getProductImageUrl(image: string | undefined | null): string | u
     return `${baseUrl}/product/image/${image}`;
   } catch (error) {
     // В случае любой ошибки возвращаем undefined
-    console.warn('Error processing product image URL:', error);
     return undefined;
   }
 }

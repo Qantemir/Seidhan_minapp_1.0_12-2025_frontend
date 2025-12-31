@@ -358,7 +358,6 @@ export const showMainButton = (
 
   // Валидация: текст обязателен для кнопки
   if (!text || text.trim().length === 0) {
-    console.warn('showMainButton: текст кнопки не может быть пустым');
     return false;
   }
 

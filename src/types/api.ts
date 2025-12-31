@@ -88,8 +88,6 @@ export interface Order {
   customer_phone: string;
   delivery_address: string;
   comment?: string;
-  delivery_type?: string;
-  payment_type?: string;
   status: OrderStatus;
   rejection_reason?: string; // Причина отказа (если статус "отказано")
   items: OrderItem[];
@@ -99,7 +97,6 @@ export interface Order {
   deleted_at?: string;
   can_edit_address: boolean;
   payment_receipt_file_id?: string;
-  payment_receipt_url?: string;
   payment_receipt_filename?: string;
   delivery_time_slot?: string; // Временной промежуток доставки (например, "13:00-14:00")
 }
@@ -162,8 +159,6 @@ export interface CreateOrderRequest {
   phone: string;
   address: string;
   comment?: string;
-  delivery_type?: string;
-  payment_type?: string;
   payment_receipt?: File;
 }
 
