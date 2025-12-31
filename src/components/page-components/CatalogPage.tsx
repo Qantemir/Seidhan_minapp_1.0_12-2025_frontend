@@ -234,7 +234,8 @@ export const CatalogPage = () => {
         ref={headerRef}
         className="fixed inset-x-0 glass border-b border-border/50 px-4 py-3 sm:px-6 sm:py-4 shadow-glow relative overflow-hidden"
         style={{
-          top: headerTopOffset,
+          top: 0,
+          paddingTop: headerTopOffset,
           zIndex: 10,
         }}
         role="banner"
