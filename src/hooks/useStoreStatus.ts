@@ -15,8 +15,8 @@ import type { StoreStatus } from '@/types/api';
  * 
  * Оптимизирован для производительности:
  * - Использует React Query для кэширования
- * - Автоматический polling каждые 60 секунд
- * - Кэш на 60 секунд (синхронизировано с серверным кэшем)
+ * - Минимальный polling (только когда приложение активно)
+ * - Кэш на 5 минут (статус меняется очень редко)
  */
 export function useStoreStatus() {
   const {
@@ -26,9 +26,12 @@ export function useStoreStatus() {
   } = useQuery<StoreStatus>({
     queryKey: queryKeys.storeStatus,
     queryFn: () => api.getStoreStatus(),
-    staleTime: 2 * 60 * 1000, // 2 минуты - статус меняется редко
-    gcTime: 5 * 60 * 1000, // 5 минут кэш
-    refetchInterval: 2 * 60 * 1000, // Автоматический polling каждые 2 минуты (увеличено с 60 сек)
+    staleTime: 5 * 60 * 1000, // 5 минут - статус меняется очень редко
+    gcTime: 10 * 60 * 1000, // 10 минут кэш
+    // Увеличен интервал polling до 5 минут - статус меняется редко
+    // Polling только когда вкладка активна (refetchIntervalInBackground: false по умолчанию)
+    refetchInterval: 5 * 60 * 1000, // Автоматический polling каждые 5 минут
+    refetchIntervalInBackground: false, // Не делать запросы когда вкладка неактивна
     // Используем глобальные настройки для refetch, чтобы избежать конфликтов
     // и предотвратить 499 ошибки (client closed request) при быстрых переключениях
     refetchOnWindowFocus: false, // Используем глобальную настройку (false)
