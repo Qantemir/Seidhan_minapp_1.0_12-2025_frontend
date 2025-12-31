@@ -45,7 +45,11 @@ export const AdminOrderDetailView = ({
     />
 
     <div className="p-4 space-y-6">
-      <AdminOrderStatusCard status={order.status} rejectionReason={order.rejection_reason} />
+      <AdminOrderStatusCard 
+        status={order.status} 
+        rejectionReason={order.rejection_reason}
+        deliveryTimeSlot={order.delivery_time_slot}
+      />
 
       <AdminOrderStatusActions
         availableStatuses={availableStatuses}
@@ -53,6 +57,7 @@ export const AdminOrderDetailView = ({
         labels={statusLabels}
         onSelect={onStatusSelect}
         disabled={updating}
+        deliveryTimeSlot={order.delivery_time_slot}
       />
 
       <AdminOrderCustomerCard name={order.customer_name} phone={order.customer_phone} />

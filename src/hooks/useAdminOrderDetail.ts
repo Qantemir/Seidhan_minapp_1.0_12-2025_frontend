@@ -62,9 +62,22 @@ export const useAdminOrderDetail = (orderId?: string) => {
 
   const handleStatusSelect = useCallback(
     (newStatus: OrderStatus) => {
-      if (!order || newStatus === order.status) {
+      if (!order) {
         return;
       }
+      
+      // Если статус не меняется, но это "принят", разрешаем изменить время доставки
+      if (newStatus === order.status && newStatus === 'принят') {
+        setPendingStatus(newStatus);
+        setDeliveryTimeDialogOpen(true);
+        return;
+      }
+      
+      // Если статус не меняется и это не "принят", ничего не делаем
+      if (newStatus === order.status) {
+        return;
+      }
+      
       setPendingStatus(newStatus);
       // Сбрасываем сохраненную причину отказа при выборе нового статуса
       if (newStatus !== 'отказано') {

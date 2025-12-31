@@ -62,6 +62,13 @@ export const AdminOrderList = ({
             </p>
           </div>
 
+          {order.status === 'принят' && order.delivery_time_slot && (
+            <div className="mt-2 pt-2 border-t border-border">
+              <p className="text-xs text-muted-foreground">
+                ⏰ Доставка: <span className="text-foreground font-medium">{order.delivery_time_slot}</span>
+              </p>
+            </div>
+          )}
           <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
             <span className="text-sm text-muted-foreground">
               {order.items_count} товаров

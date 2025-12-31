@@ -135,6 +135,7 @@ export interface OrderSummary {
   total_amount: number;
   created_at: string;
   items_count: number; // Количество товаров в заказе
+  delivery_time_slot?: string; // Временной промежуток доставки (например, "13:00-14:00")
 }
 
 export interface AdminOrdersResponse {
