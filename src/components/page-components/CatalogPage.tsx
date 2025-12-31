@@ -253,20 +253,20 @@ export const CatalogPage = () => {
                 setForceClientView(false);
                 navigate('/admin');
               }}
-              className="flex-1 h-10 px-3 sm:px-4 gap-2 rounded-lg"
+              className="flex-1 h-10 px-2 sm:px-3 gap-1.5 sm:gap-2 rounded-lg"
             >
               <ShieldCheck className="h-4 w-4 flex-shrink-0" />
-              <span className="hidden sm:inline text-sm font-medium">Админ-режим</span>
+              <span className="text-xs sm:text-sm font-medium">Админ</span>
             </Button>
           )}
           <Button
             variant="outline"
             size="sm"
             onClick={handleHelp}
-            className={`h-10 px-3 sm:px-4 rounded-lg ${isUserAdmin && forceClientView ? 'flex-1' : 'flex-1'}`}
+            className="flex-1 h-10 px-2 sm:px-3 gap-1.5 sm:gap-2 rounded-lg"
           >
-            <HelpCircle className="h-4 w-4 sm:mr-2 flex-shrink-0" />
-            <span className="hidden sm:inline text-sm font-medium">Помощь</span>
+            <HelpCircle className="h-4 w-4 flex-shrink-0" />
+            <span className="text-xs sm:text-sm font-medium">Помощь</span>
           </Button>
 
           <div className="relative flex-1">
@@ -274,12 +274,12 @@ export const CatalogPage = () => {
               variant="default"
               size="sm"
               onClick={handleOpenCart}
-              className="relative w-full h-10 px-3 sm:px-4 rounded-lg shadow-sm glow-hover"
+              className="relative w-full h-10 px-2 sm:px-3 gap-1.5 sm:gap-2 rounded-lg shadow-sm glow-hover"
             >
-              <ShoppingCart className="h-4 w-4 sm:mr-2 flex-shrink-0" />
-              <span className="hidden sm:inline text-sm font-medium">Корзина</span>
+              <ShoppingCart className="h-4 w-4 flex-shrink-0" />
+              <span className="text-xs sm:text-sm font-medium">Корзина</span>
               {cartItemsCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 sm:relative sm:top-0 sm:right-0 sm:ml-2 bg-gradient-to-br from-primary to-accent text-primary-foreground text-[10px] sm:text-xs font-bold rounded-full h-5 w-5 sm:h-6 sm:px-2 sm:w-auto flex items-center justify-center shadow-sm glow-primary">
+                <span className="absolute -top-1.5 -right-1.5 bg-gradient-to-br from-primary to-accent text-primary-foreground text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-sm glow-primary">
                   {cartItemsCount}
                 </span>
               )}
