@@ -7,6 +7,7 @@ import { AdminOrderDetailNotFound } from '@/components/admin/orders/AdminOrderDe
 import { AdminOrderDetailView } from '@/components/admin/orders/AdminOrderDetailView';
 import { AdminOrderStatusDialog } from '@/components/admin/orders/AdminOrderStatusDialog';
 import { AdminOrderDeleteDialog } from '@/components/admin/orders/AdminOrderDeleteDialog';
+import { AdminDeliveryTimeDialog } from '@/components/admin/orders/AdminDeliveryTimeDialog';
 import { useAdminOrderDetail } from '@/hooks/useAdminOrderDetail';
 
 const AVAILABLE_STATUSES: OrderStatus[] = [
@@ -29,6 +30,7 @@ export const AdminOrderDetailPage = () => {
     updating,
     pendingStatus,
     statusDialogOpen,
+    deliveryTimeDialogOpen,
     deleteDialogOpen,
     savedRejectionReason,
     receiptUrl,
@@ -38,7 +40,9 @@ export const AdminOrderDetailPage = () => {
     seoTitle,
     handleStatusSelect,
     confirmStatusChange,
+    confirmDeliveryTime,
     handleStatusDialogChange,
+    handleDeliveryTimeDialogChange,
     goBack,
     handleDeleteClick,
     confirmDeleteOrder,
@@ -89,6 +93,13 @@ export const AdminOrderDetailPage = () => {
         initialRejectionReason={savedRejectionReason}
         onConfirm={confirmStatusChange}
         onOpenChange={handleStatusDialogChange}
+      />
+
+      <AdminDeliveryTimeDialog
+        open={deliveryTimeDialogOpen}
+        updating={updating}
+        onConfirm={confirmDeliveryTime}
+        onOpenChange={handleDeliveryTimeDialogChange}
       />
 
       <AdminOrderDeleteDialog

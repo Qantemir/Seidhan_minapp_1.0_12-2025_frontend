@@ -101,6 +101,7 @@ export interface Order {
   payment_receipt_file_id?: string;
   payment_receipt_url?: string;
   payment_receipt_filename?: string;
+  delivery_time_slot?: string; // Временной промежуток доставки (например, "13:00-14:00")
 }
 
 export type BroadcastSegment = 'all' ;
@@ -172,6 +173,7 @@ export interface UpdateAddressRequest {
 export interface UpdateStatusRequest {
   status: OrderStatus;
   rejection_reason?: string; // Причина отказа (обязательна для статуса "отказано")
+  delivery_time_slot?: string; // Временной промежуток доставки (например, "13:00-14:00")
 }
 
 

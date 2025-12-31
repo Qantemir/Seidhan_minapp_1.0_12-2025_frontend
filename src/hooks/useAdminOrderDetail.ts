@@ -18,6 +18,7 @@ export const useAdminOrderDetail = (orderId?: string) => {
   const [updating, setUpdating] = useState(false);
   const [pendingStatus, setPendingStatus] = useState<OrderStatus | null>(null);
   const [statusDialogOpen, setStatusDialogOpen] = useState(false);
+  const [deliveryTimeDialogOpen, setDeliveryTimeDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [savedRejectionReason, setSavedRejectionReason] = useState<string>('');
 
@@ -69,12 +70,18 @@ export const useAdminOrderDetail = (orderId?: string) => {
       if (newStatus !== 'отказано') {
         setSavedRejectionReason('');
       }
-      setStatusDialogOpen(true);
+      
+      // Если выбран статус "принят", открываем диалог выбора времени
+      if (newStatus === 'принят') {
+        setDeliveryTimeDialogOpen(true);
+      } else {
+        setStatusDialogOpen(true);
+      }
     },
     [order],
   );
 
-  const confirmStatusChange = useCallback(async (rejectionReason?: string) => {
+  const confirmStatusChange = useCallback(async (rejectionReason?: string, deliveryTimeSlot?: string) => {
     if (!order || !pendingStatus || updating) {
       return;
     }
@@ -97,7 +104,7 @@ export const useAdminOrderDetail = (orderId?: string) => {
 
     try {
       // Формируем данные для запроса
-      const updateData: { status: OrderStatus; rejection_reason?: string } = {
+      const updateData: { status: OrderStatus; rejection_reason?: string; delivery_time_slot?: string } = {
         status: targetStatus,
       };
       
@@ -105,12 +112,25 @@ export const useAdminOrderDetail = (orderId?: string) => {
       if (targetStatus === 'отказано' && rejectionReason) {
         updateData.rejection_reason = rejectionReason.trim();
       }
+      
+      // Добавляем временной промежуток доставки
+      if (targetStatus === 'принят' && deliveryTimeSlot) {
+        updateData.delivery_time_slot = deliveryTimeSlot;
+      }
 
       const updatedOrder = await api.updateOrderStatus(order.id, updateData);
       setOrder(updatedOrder);
+      
+      // Инвалидируем кэш списка заказов для всех статусов, чтобы изменения отобразились на странице админа
+      await queryClient.invalidateQueries({ 
+        queryKey: ['admin-orders'],
+        refetchType: 'active', // Обновить только активные запросы
+      });
+      
       toast.success('Статус заказа обновлён');
-      // Закрываем диалог только после успешного обновления
+      // Закрываем диалоги только после успешного обновления
       setStatusDialogOpen(false);
+      setDeliveryTimeDialogOpen(false);
       setPendingStatus(null);
       setSavedRejectionReason('');
     } catch (error: any) {
@@ -120,7 +140,11 @@ export const useAdminOrderDetail = (orderId?: string) => {
     } finally {
       setUpdating(false);
     }
-  }, [order, pendingStatus, updating]);
+  }, [order, pendingStatus, updating, queryClient]);
+  
+  const confirmDeliveryTime = useCallback(async (timeSlot: string) => {
+    await confirmStatusChange(undefined, timeSlot);
+  }, [confirmStatusChange]);
 
   const handleStatusDialogChange = useCallback(
     (open: boolean) => {
@@ -131,6 +155,19 @@ export const useAdminOrderDetail = (orderId?: string) => {
       }
     },
     [updating],
+  );
+  
+  const handleDeliveryTimeDialogChange = useCallback(
+    (open: boolean) => {
+      setDeliveryTimeDialogOpen(open);
+      if (!open && !updating) {
+        // Если диалог закрыт без выбора времени, сбрасываем pendingStatus только если это был "принят"
+        if (pendingStatus === 'принят') {
+          setPendingStatus(null);
+        }
+      }
+    },
+    [updating, pendingStatus],
   );
 
   const goBack = useCallback(() => navigate('/admin'), [navigate]);
@@ -226,6 +263,7 @@ export const useAdminOrderDetail = (orderId?: string) => {
     updating,
     pendingStatus,
     statusDialogOpen,
+    deliveryTimeDialogOpen,
     deleteDialogOpen,
     savedRejectionReason,
     receiptUrl,
@@ -235,7 +273,9 @@ export const useAdminOrderDetail = (orderId?: string) => {
     seoTitle,
     handleStatusSelect,
     confirmStatusChange,
+    confirmDeliveryTime,
     handleStatusDialogChange,
+    handleDeliveryTimeDialogChange,
     goBack,
     handleDeleteClick,
     confirmDeleteOrder,
