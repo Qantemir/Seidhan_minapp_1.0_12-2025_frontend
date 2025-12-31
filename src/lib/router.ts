@@ -1,11 +1,12 @@
 // Утилита для роутинга с React Router
+import { useCallback } from 'react';
 import { useNavigate as useReactRouterNavigate, useLocation as useReactRouterLocation, useParams as useReactRouterParams } from 'react-router-dom';
 
 // Хук для навигации
 export function useNavigate() {
   const navigate = useReactRouterNavigate();
   
-  return (to: string | number, options?: { replace?: boolean }) => {
+  return useCallback((to: string | number, options?: { replace?: boolean }) => {
     if (typeof to === 'number') {
       // Если передано число, делаем go back/forward
       if (to === -1) {
@@ -21,7 +22,7 @@ export function useNavigate() {
         navigate(to);
       }
     }
-  };
+  }, [navigate]);
 }
 
 // Хук для получения текущего пути

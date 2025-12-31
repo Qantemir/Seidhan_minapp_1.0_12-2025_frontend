@@ -56,7 +56,8 @@ export const useAdminOrderDetail = (orderId?: string) => {
     return () => {
       cancelled = true;
     };
-  }, [isAuthorized, orderId, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthorized, orderId]);
 
   const handleStatusSelect = useCallback(
     (newStatus: OrderStatus) => {
