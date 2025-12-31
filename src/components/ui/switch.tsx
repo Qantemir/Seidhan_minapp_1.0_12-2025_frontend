@@ -29,7 +29,7 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
           "relative inline-flex h-6 w-14 shrink-0 rounded-full transition-colors duration-200 ease-in-out",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
-          checked ? "bg-accent/40" : "bg-muted",
+          checked ? "bg-accent/40" : "bg-muted border-2 border-border/60",
           className
         )}
         {...props}
@@ -40,7 +40,9 @@ const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
             // knob (bigger than track like on the image)
             "absolute left-1 top-1/2 h-8 w-8 -translate-y-1/2 rounded-full shadow-md",
             "transition-transform duration-200 ease-in-out",
-            checked ? "translate-x-5 bg-primary shadow-primary/50" : "translate-x-0 bg-card border border-border"
+            checked 
+              ? "translate-x-5 bg-primary shadow-primary/50" 
+              : "translate-x-0 bg-white border-2 border-gray-400 shadow-lg"
           )}
         />
       </button>
